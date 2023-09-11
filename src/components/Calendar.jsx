@@ -99,8 +99,8 @@ const RenderDaysOfMonth = ({calendar, setCalendar, setCurrentEvent, setShowEditE
       >
         {day.isDate && (
           <>
-            <h2>{day.day} <span className="weekday-name text-gray-600">{day.name}</span></h2>
-            <ul className="space-y-2">
+            <h2 className="mb-2">{day.day} <span className="weekday-name text-gray-600">{day.name}</span></h2>
+            <ul className="space-y-2 mb-2">
               { day.events.length > 0 && day.events.map((event, i) => (
                 <li key={i}>
                     <button 
