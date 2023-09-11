@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 
-import { MdDeleteForever, MdFormatListBulletedAdd, MdEditCalendar, MdAlarmAdd, MdSave } from 'react-icons/md'
-import { AiOutlineCloseCircle } from 'react-icons/ai'
+import { MdEditCalendar } from 'react-icons/md'
 
 import Calendar from './components/Calendar'
 import EditEvent from './components/EditEvent'
@@ -54,11 +53,6 @@ function App() {
 
   const [calendar, setCalendar] = useState(defaultCalendar)
 
-  // const [calendar, setCalendar] = useState(() => {
-  //   const storedCalendar = localStorage.getItem('calendar')
-  //   return storedCalendar ? JSON.parse(storedCalendar) : defaultCalendar
-  // })
-
   const saveCalendarToLocalStorage = (updatedCalendar) => {
     localStorage.setItem('calendar', JSON.stringify(updatedCalendar))
   }
@@ -68,11 +62,11 @@ function App() {
       const storedCalendar = localStorage.getItem('calendar')
       setCalendar(storedCalendar ? JSON.parse(storedCalendar) : defaultCalendar)
     }
-  }, [])
+  }, [defaultCalendar])
 
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-12 xl:p-24`}
+      className={`flex min-h-screen flex-col items-center justify-between p-12 xl:p-24 bg-black`}
     >
 
        <div className='w-full'>

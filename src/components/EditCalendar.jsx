@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { MdDeleteForever, MdFormatListBulletedAdd, MdEditCalendar, MdAlarmAdd, MdSave } from 'react-icons/md'
+import { MdDeleteForever, MdFormatListBulletedAdd, MdSave } from 'react-icons/md'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 
 import DeleteWarning from './DeleteWarning'

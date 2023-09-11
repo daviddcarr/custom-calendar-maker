@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import DeleteWarning from './DeleteWarning'
 
-import { MdDeleteForever, MdFormatListBulletedAdd, MdEditCalendar, MdAlarmAdd, MdSave } from 'react-icons/md'
+import { MdDeleteForever, MdSave } from 'react-icons/md'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 
 const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendarToLocalStorage}) => {

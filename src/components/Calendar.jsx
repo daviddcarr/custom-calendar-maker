@@ -1,4 +1,4 @@
-import { MdDeleteForever, MdFormatListBulletedAdd, MdEditCalendar, MdAlarmAdd, MdSave } from 'react-icons/md'
+import { MdAlarmAdd } from 'react-icons/md'
 
 const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent}) => {
 
@@ -21,6 +21,8 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent}) =>
           events: events
         })
         startDay = ((month.days + startDay) % calendar.weekdays.length)
+
+        return null
       })
     }
   
@@ -29,7 +31,7 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent}) =>
   
         {months.map((month, index) => {
   
-          const showDivider = currentYear != month.year
+          const showDivider = currentYear !== month.year
           currentYear = month.year
   
           return (
