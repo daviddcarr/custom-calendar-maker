@@ -67,7 +67,7 @@ function App() {
 
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-12 xl:p-24 bg-black`}
+      className={`flex min-h-screen flex-col items-center justify-between p-6 md:p-12 xl:p-24 bg-black`}
     >
 
        <div className='w-full'>

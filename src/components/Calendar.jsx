@@ -1,4 +1,4 @@
-import { MdAlarmAdd } from 'react-icons/md'
+import { MdAlarmAdd, MdCheckCircleOutline, MdCheckCircle, MdOutlineHighlightOff } from 'react-icons/md'
 
 const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, saveCalendarToLocalStorage}) => {
 
@@ -107,12 +107,12 @@ const RenderDaysOfMonth = ({calendar, setCalendar, setCurrentEvent, setShowEditE
   return days.map((day, index) => (
       <div
         key={index}
-      className={`weekday ${ day.isDate ? 'is-date' : 'not-date'} ${checkIfDayIsChecked(day) !== -1 ? 'border-green-400 bg-gray-900' : 'border-gray-900'} flex flex-col px-4 py-2 min-h-[150px] border-[1px] border-gray-900`}
+      className={`weekday ${ day.isDate ? 'is-date' : 'not-date'} ${checkIfDayIsChecked(day) !== -1 ? 'bg-gray-950' : ''} flex flex-col px-4 py-2 min-h-[150px] border-[1px] border-gray-900`}
       >
         {day.isDate && (
           <>
             <button
-              className={`bg-transparent w-full text-left mb-2 ${day.isDate ? 'text-gray-900' : 'text-gray-500'}`}
+              className={`group flex justify-between items-center bg-transparent w-full text-left mb-2 ${day.isDate ? 'text-gray-900' : 'text-gray-500'}`}
               onClick={() => {
                 let checkedDays = [...calendar.checkedDays]
                 const dayIndex = checkIfDayIsChecked(day)
@@ -130,6 +130,15 @@ const RenderDaysOfMonth = ({calendar, setCalendar, setCurrentEvent, setShowEditE
                 saveCalendarToLocalStorage({...calendar, checkedDays: checkedDays })
               }}>
                 <h2 className="text-white">{day.day} <span className="weekday-name text-gray-600">{day.name}</span></h2>
+                { checkIfDayIsChecked(day) !== -1 ? (
+                    <>
+                      <MdCheckCircle className="text-xl text-green-400 group-hover:hidden" />
+                      <MdOutlineHighlightOff className="text-xl text-gray-700 hidden group-hover:block text-red-400" />
+                    </>
+                  ) : (
+                    <MdCheckCircleOutline className="text-xl text-gray-700 group-hover:text-green-400" />
+                  )
+                }
               </button>
             <ul className="space-y-2 mb-2">
               { day.events.length > 0 && day.events.map((event, i) => (
