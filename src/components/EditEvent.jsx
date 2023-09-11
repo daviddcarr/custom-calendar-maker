@@ -160,7 +160,7 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                         setShowEditEvent(false)
                     }}
                     >
-                    <MdSave className='text-white' /> <span>Save</span>
+                        <MdSave className='text-white' /> <span>Save</span>
                     </button>
         
                     <button
@@ -169,7 +169,7 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                         setShowDeleteWarning(true)
                     }}
                     >
-                    <MdDeleteForever className='text-white' />
+                        <MdDeleteForever className='text-white' />
                     </button>
                 </div>
         

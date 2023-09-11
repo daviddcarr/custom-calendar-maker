@@ -1,6 +1,6 @@
 import { MdAlarmAdd } from 'react-icons/md'
 
-const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent}) => {
+const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, saveCalendarToLocalStorage}) => {
 
     const months = []
     let startDay = calendar.startDay
@@ -57,7 +57,14 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent}) =>
                         </div>
                       ))
                     }
-                    <RenderDaysOfMonth calendar={calendar} setCalendar={setCalendar} setCurrentEvent={setCurrentEvent} setShowEditEvent={setShowEditEvent} month={month} />
+                    <RenderDaysOfMonth 
+                      calendar={calendar} 
+                      setCalendar={setCalendar}
+                      setCurrentEvent={setCurrentEvent} 
+                      setShowEditEvent={setShowEditEvent} 
+                      month={month}
+                      saveCalendarToLocalStorage={saveCalendarToLocalStorage}
+                      />
                   </div>
               </div>
             </div>
@@ -71,7 +78,7 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent}) =>
 export default Calendar
 
 
-const RenderDaysOfMonth = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, month}) => {
+const RenderDaysOfMonth = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, month, saveCalendarToLocalStorage}) => {
 
   const days = []
   const cellCount = (month.days + month.startDay) + (calendar.weekdays.length - ((month.days + month.startDay) % calendar.weekdays.length))
@@ -92,14 +99,38 @@ const RenderDaysOfMonth = ({calendar, setCalendar, setCurrentEvent, setShowEditE
     days.push(dateInfo)
   }
 
+  const checkIfDayIsChecked = (day) => {
+    const checkedDayIndex = calendar.checkedDays.findIndex(checkedDay => checkedDay.day === day.day && checkedDay.month === month.monthId && checkedDay.year === month.yearIndex)
+    return checkedDayIndex
+  }
+
   return days.map((day, index) => (
       <div
         key={index}
-      className={`weekday ${ day.isDate ? 'is-date' : 'not-date'} flex flex-col px-4 py-2 min-h-[150px] border-[1px] border-gray-900`}
+      className={`weekday ${ day.isDate ? 'is-date' : 'not-date'} ${checkIfDayIsChecked(day) !== -1 ? 'border-green-400 bg-gray-900' : 'border-gray-900'} flex flex-col px-4 py-2 min-h-[150px] border-[1px] border-gray-900`}
       >
         {day.isDate && (
           <>
-            <h2 className="mb-2">{day.day} <span className="weekday-name text-gray-600">{day.name}</span></h2>
+            <button
+              className={`bg-transparent w-full text-left mb-2 ${day.isDate ? 'text-gray-900' : 'text-gray-500'}`}
+              onClick={() => {
+                let checkedDays = [...calendar.checkedDays]
+                const dayIndex = checkIfDayIsChecked(day)
+                console.log("Day Index: ", dayIndex)
+                if (dayIndex === -1) {
+                  checkedDays.push({
+                    day: day.day,
+                    month: month.monthId,
+                    year: month.yearIndex
+                  })
+                } else {
+                  checkedDays.splice(dayIndex, 1)
+                }
+                setCalendar({...calendar, checkedDays: checkedDays })
+                saveCalendarToLocalStorage({...calendar, checkedDays: checkedDays })
+              }}>
+                <h2 className="text-white">{day.day} <span className="weekday-name text-gray-600">{day.name}</span></h2>
+              </button>
             <ul className="space-y-2 mb-2">
               { day.events.length > 0 && day.events.map((event, i) => (
                 <li key={i}>

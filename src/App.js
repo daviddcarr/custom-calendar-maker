@@ -44,6 +44,7 @@ function App() {
           description: 'New Year\'s Day is the first day of the Gregorian calendar, which is widely used in many countries such as the USA.'
         }
       ],
+      checkedDays: []
     }
   ), [])
 
@@ -114,7 +115,9 @@ function App() {
             calendar={calendar} 
             setCalendar={setCalendar} 
             setCurrentEvent={setCurrentEvent} 
-            setShowEditEvent={setShowEditEvent} />
+            setShowEditEvent={setShowEditEvent}
+            saveCalendarToLocalStorage={saveCalendarToLocalStorage}
+            />
 
 
        </div>

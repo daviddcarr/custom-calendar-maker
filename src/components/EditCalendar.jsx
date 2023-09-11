@@ -4,12 +4,31 @@ import { MdDeleteForever, MdFormatListBulletedAdd, MdSave } from 'react-icons/md
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 
 import DeleteWarning from './DeleteWarning'
+import JsonUploader from './JsonUploader'
 
 const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarToLocalStorage, defaultCalendar}) => {
 
     const [calendarJSON, setCalendarJSON] = useState(JSON.stringify(calendar, null, 2))
 
+    const [showFileUploader, setShowFileUploader] = useState(false)
+    const [dataUploaded, setDataUploaded] = useState(false)
     const [showResetWarning, setShowResetWarning] = useState(false)
+
+    const downloadJson = () => {
+      if (localStorage.getItem('calendar') !== null) {
+        let storedData = localStorage.getItem('calendar')
+
+        const filename = 'my_calendarling_data.json'
+
+        let element = document.createElement('a')
+        element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(storedData))
+        element.setAttribute('download', filename)
+
+        document.body.appendChild(element)
+        element.click()
+        document.body.removeChild(element)
+      }
+    }
 
     return (
       <>
@@ -206,23 +225,37 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
       
               </div>
 
+              <hr className='border-gray-200' />
+
               {/* Text field to load calendar JSON to localStorage */}
               <div className="space-y-2">
-                <label className='text-gray-900'>Calendar JSON:</label>
-                <textarea
-                  value={calendarJSON}
-                  rows={6}
-                  className='w-full border-[1px] border-gray-900 rounded px-4 py-2 text-gray-900'
-                  onChange={(e) => {
-                    setCalendarJSON(e.target.value)
-                    try {
-                      const calendar = JSON.parse(e.target.value)
-                      setCalendar(calendar)
-                    } catch (error) {
-                      console.log(error)
-                    }
-                  }}
-                />
+                <div className="flex gap-2 w-full">
+
+                  <button
+                    className='bg-green-500 grow text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                    onClick={downloadJson}
+                    >
+                      Export
+                  </button>
+
+                  <button
+                    className='bg-green-500 grow text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                    onClick={() => {
+                      setShowFileUploader(!showFileUploader)
+                    }}
+                    >
+                      Import
+                  </button>
+
+                </div>
+
+                {showFileUploader && (
+                    <JsonUploader
+                      visibilityFunction={setShowFileUploader}
+                      setCalendar={setCalendar}
+                      saveCalendarToLocalStorage={saveCalendarToLocalStorage}
+                      dataUploaded={setDataUploaded} />
+                )}
               </div>
 
               {/* Save  Button */}
