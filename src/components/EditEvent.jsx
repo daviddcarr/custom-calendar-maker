@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import DeleteWarning from './DeleteWarning'
 
@@ -15,7 +15,6 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
     }
 
     const eventIndex = calendar.events.indexOf(event)
-  
   
     return (
         <>
@@ -62,9 +61,9 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                             step={1}
                             className='w-full border-l-[1px] border-y-[1px] border-gray-900 rounded-l px-4 py-2 text-gray-900'
                             onChange={(e) => {
-                            const events = calendar.events
-                            events[eventIndex].date = e.target.value ? parseInt(e.target.value) : 0
-                            setCalendar({...calendar, events: events})
+                                const events = calendar.events
+                                events[eventIndex].date = e.target.value ? parseInt(e.target.value) : 0
+                                setCalendar({...calendar, events: events})
                             }}
                         />
         
@@ -72,9 +71,9 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                             value={event.month}
                             className='w-full border-[1px] border-gray-900 px-4 py-2 text-gray-900'
                             onChange={(e) => {
-                            const events = calendar.events
-                            events[eventIndex].month = e.target.value ? parseInt(e.target.value) : 0
-                            setCalendar({...calendar, events: events})
+                                const events = calendar.events
+                                events[eventIndex].month = e.target.value ? parseInt(e.target.value) : 0
+                                setCalendar({...calendar, events: events})
                             }}
                         >
                             {
@@ -89,16 +88,15 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                             value={event.year}
                             className='w-full border-r-[1px] border-y-[1px] border-gray-900 rounded-r px-4 py-2 text-gray-900'
                             onChange={(e) => {
-                            const events = calendar.events
-                            events[eventIndex].year = e.target.value ? parseInt(e.target.value) : 0
-                            setCalendar({...calendar, events: events})
+                                const events = calendar.events
+                                events[eventIndex].year = e.target.value ? parseInt(e.target.value) : 0
+                                setCalendar({...calendar, events: events})
                             }}
                         >
                             {
-                            yearStrings.map((year, index) => (
-                                <option key={index} value={index}>{year}</option>
-        
-                            ))
+                                yearStrings.map((year, index) => (
+                                    <option key={index} value={index}>{year}</option>
+                                ))
                             }
                         </select>
         
@@ -168,12 +166,6 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                     <button
                     className='bg-red-800 text-white text-lg px-4 py-2 rounded flex items-center space-x-2'
                     onClick={() => {
-                        // const events = calendar.events
-                        // events.splice(eventIndex, 1)
-                        // const updatedCalendar = {...calendar, events: events}
-                        // setCalendar(updatedCalendar)
-                        // saveCalendarToLocalStorage(updatedCalendar)
-                        // setShowEditEvent(false)
                         setShowDeleteWarning(true)
                     }}
                     >
@@ -183,6 +175,7 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
         
                 </div>
             </div>
+
             {showDeleteWarning && (
                 <DeleteWarning
                     message="Are you sure you want to delete this event?"
