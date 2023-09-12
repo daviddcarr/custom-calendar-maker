@@ -52,18 +52,18 @@ const JumpToButtons = ({calendar}) => {
                     </div>
                 </div>
             </div>
-            <div className="group fixed top-1/2 left-0 -translate-y-1/2 flex-col gradient-mask text-white rounded-r hidden lg:flex pointer-events-none">
-                <div className="max-h-[80vh] overflow-scroll no-scrollbar pointer-events-auto">
+            <div className="group fixed top-1/2 left-0 -translate-y-1/2 flex-col gradient-mask text-white overflow-visible hidden lg:flex pointer-events-none">
+                <div className="max-h-[80vh] overflow-y-scroll overflow-x-visible no-scrollbar pointer-events-auto">
                     {months.map((month, index) => (
                         <button 
                             key={index} 
                 
-                            className="jump-to-buttons flex items-center text-md first:mt-24 last:mb-24 pointer-events-auto " 
+                            className="jump-to-buttons flex items-center text-md first:mt-24 last:mb-24 pointer-events-auto w-max" 
                             onClick={() => {
                                 document.getElementById(`month-${month.monthId}-year-${month.yearIndex}`).scrollIntoView({ behavior: 'smooth' })
                             }}
                             >
-                            <span className="grow p-2 text-left bg-gray-800">{month.month} {month.year}</span> <span className="p-[12px]"><MdCircle /></span>
+                            <span className="month-year grow p-2 text-left bg-gray-800 w-max">{month.month} {month.year}</span> <span className="p-[12px] dot"><MdCircle /></span>
                         </button>
                     ))}
                 </div>

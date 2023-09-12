@@ -72,18 +72,36 @@ function App() {
       className={`flex min-h-screen flex-col items-center justify-between p-6 md:p-12 xl:p-24 bg-black`}
     >
 
-       <div className='w-full'>
+      <div className="w-full fixed top-0 left-0 right-0 bg-gray-900 border-b-2 border-gray-800">
+        <div className="m-auto max-w-[1500px] p-2 flex justify-between">
+          <h2 className="font-logo text-2xl capitalize">Calendarling</h2>
+        </div>
+      </div>
 
-          {/* Calendar Title */}
-          <div className="flex items-center">
-            <h1 className='text-2xl sm:text-4xl font-bold grow'>{calendar.name}</h1>
 
-            <button
-              className='ml-4 bg-green-500 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
-              onClick={() => setShowEditCalendar(true)} 
-              >
-              <MdEditCalendar />
-            </button>
+       <div className='w-full mt-9'>
+
+          <div className="w-full max-w-[1500px] m-auto">
+            {/* Calendar Title */}
+            <div className="flex items-center">
+              <h1 className='text-2xl sm:text-4xl font-bold grow'>{calendar.name}</h1>
+
+              <button
+                className='ml-4 bg-green-500 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                onClick={() => setShowEditCalendar(true)} 
+                >
+                <MdEditCalendar />
+              </button>
+            </div>
+
+            {/* Render Calendar */}
+            <Calendar 
+              calendar={calendar} 
+              setCalendar={setCalendar} 
+              setCurrentEvent={setCurrentEvent} 
+              setShowEditEvent={setShowEditEvent}
+              saveCalendarToLocalStorage={saveCalendarToLocalStorage}
+              />
           </div>
 
           {/* Edit Calendar Interface */}
@@ -116,16 +134,6 @@ function App() {
           <JumpToButtons
             calendar={calendar}
             />
-
-          {/* Render Calendar */}
-          <Calendar 
-            calendar={calendar} 
-            setCalendar={setCalendar} 
-            setCurrentEvent={setCurrentEvent} 
-            setShowEditEvent={setShowEditEvent}
-            saveCalendarToLocalStorage={saveCalendarToLocalStorage}
-            />
-
 
        </div>
 

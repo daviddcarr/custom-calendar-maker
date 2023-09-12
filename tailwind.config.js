@@ -6,6 +6,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
+        logo: ["Josefin Slab", "sans-serif"],
         heading: ["Roboto Condensed", "sans-serif"],
       }
     },

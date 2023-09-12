@@ -11,14 +11,23 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .jump-to-buttons {
-  transform: translateX(calc(-100% + 42px));
+  transform: translateX(calc(-100% + 40px));
   transition: transform 0.3s ease-in-out;
-
 }
+.jump-to-buttons .month-year {
+  width: 0px;
+  transition: width 0.3s ease-in-out;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .jump-to-buttons:hover {
   transform: translateX(0);
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
+}
+.jump-to-buttons:hover .month-year {
+  width: 100%;
 }
 
 .weekdays-1,
@@ -290,25 +299,6 @@ h1,h2,h3,h4,h5,h6 {
     border-bottom-color: rgb(17 24 39 / var(--tw-border-opacity));
   }
 }
-
-
-
-
-/* .weekdays-8 {
-  grid-template-columns: repeat(8, 1fr);
-}
-.weekdays-9 {
-  grid-template-columns: repeat(9, 1fr);
-}
-.weekdays-10 {
-  grid-template-columns: repeat(10, 1fr);
-}
-.weekdays-11 {
-  grid-template-columns: repeat(11, 1fr);
-}
-.weekdays-12 {
-  grid-template-columns: repeat(12, 1fr);
-} */
 
 
 .event-red {

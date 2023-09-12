@@ -12,7 +12,14 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
 
     const [showFileUploader, setShowFileUploader] = useState(false)
     const [dataUploaded, setDataUploaded] = useState(false)
+
     const [showResetWarning, setShowResetWarning] = useState(false)
+    const [resetWarningState, setResetWarningState] = useState({
+      message: '',
+      actionText: '',
+      deleteFunction: () => {},
+      cancelFunction: () => {}
+    })
 
     const downloadJson = () => {
       if (localStorage.getItem('calendar') !== null) {
@@ -35,7 +42,8 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white p-8 rounded-lg max-h-[80vh] overflow-scroll">
 
-            <div className="flex">
+            {/* Title and Close Button */}
+            <div className="flex flex-wrap">
                 <h2 className="text-2xl font-bold text-gray-900 grow">Edit Calendar</h2>
                 <button
                     className='text-3xl text-gray-500 hover:text-gray-700 rounded flex items-center space-x-4'
@@ -46,6 +54,10 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                     >
                     <AiOutlineCloseCircle />
                 </button> 
+
+                <div className="w-full flex-grow">
+                  <p className="text-sm text-gray-700 max-w-md">Warning, removing certain items from calendar after adding events can cause errors or unwanted behavior.</p>
+                </div>
             </div>
     
             <div className="mt-4 space-y-8">
@@ -119,9 +131,28 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                       <button
                         className='p-2 text-red-800 hover:bg-red-800 hover:text-white rounded-l-none rounded-tr-none rounded-br'
                         onClick={() => {
-                          const months = calendar.months
-                          months.splice(index, 1)
-                          setCalendar({...calendar, months: months})
+                          setResetWarningState({
+                            message: 'Are you sure you want to delete this month? All events in this month will be deleted.',
+                            actionText: 'Delete',
+                            deleteFunction: () => {
+                              const months = calendar.months
+                              months.splice(index, 1)
+
+                              // find all events in this month and remove them
+                              const events = calendar.events
+                              events.forEach(event => {
+                                if (event.month === index) {
+                                  events.splice(events.indexOf(event), 1)
+                                }
+                              })
+                              setCalendar({...calendar, events: events, months: months})
+                              setShowResetWarning(false)
+                            },
+                            cancelFunction: () => {
+                              setShowResetWarning(false)
+                            }
+                          })
+                          setShowResetWarning(true)
                         }}
                         >
                         <MdDeleteForever className='text-xl' />
@@ -203,7 +234,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                         <label className='text-gray-900 p-2 border-r-[1px] border-gray-300 '>Color:</label>
                         <select
                           value={category.color}
-                          className='w-full rounded px-4 py-2 text-gray-900 bg-transparent'
+                          className={`w-full rounded px-4 py-2 text-gray-900 bg-transparent ${ index === 0 ? 'col-span-2' : '' } `}
                           onChange={(e) => {
                             const categories = calendar.categories
                             categories[index].color = e.target.value
@@ -223,16 +254,37 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                           <option value='gray'>gray</option>
                         </select>
 
-                        <button
-                          className='p-2 text-red-800 hover:bg-red-800 hover:text-white rounded-l-none rounded-tr-none rounded-br'
-                          onClick={() => {
-                            const categories = calendar.categories
-                            categories.splice(index, 1)
-                            setCalendar({...calendar, categories: categories})
-                          }}
-                          >
-                          <MdDeleteForever className='text-xl' />
-                        </button>
+                          { index !== 0 &&  (
+                            <button
+                              className='p-2 text-red-800 hover:bg-red-800 hover:text-white rounded-l-none rounded-tr-none rounded-br'
+                              onClick={() => {
+                                setResetWarningState({
+                                  message: 'Are you sure you want to delete this category? All events with this category will be set to previous category.',
+                                  actionText: 'Delete',
+                                  deleteFunction: () => {
+                                    const categories = calendar.categories
+                                    categories.splice(index, 1)
+
+                                    // find all events with this category and remove it
+                                    const events = calendar.events
+                                    events.forEach(event => {
+                                      if (event.category >= index) {
+                                        event.category -= 1
+                                      }
+                                    })
+                                    setCalendar({...calendar, events: events, categories: categories})
+                                    setShowResetWarning(false)
+                                  },
+                                  cancelFunction: () => {
+                                    setShowResetWarning(false)
+                                  }
+                                })
+                                setShowResetWarning(true)
+                              }}
+                              >
+                              <MdDeleteForever className='text-xl' />
+                            </button>
+                          )}
                       </div>
                     ))
                   }
@@ -301,6 +353,19 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                 <button
                   className='bg-red-800 text-white text-lg px-4 py-2 rounded flex items-center space-x-4 shrink'
                   onClick={() => {
+                    setResetWarningState({
+                      message: 'Are you sure you want to reset the calendar?',
+                      actionText: 'Reset',
+                      deleteFunction: () => {
+                        setCalendar(defaultCalendar)
+                        saveCalendarToLocalStorage(defaultCalendar)
+                        setShowEditCalendar(false)
+                        setShowResetWarning(false)
+                      },
+                      cancelFunction: () => {
+                        setShowResetWarning(false)
+                      }
+                    })
                     setShowResetWarning(true)
                   }}
                   >
@@ -317,17 +382,10 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
         {
           showResetWarning && (
             <DeleteWarning
-              message='Are you sure you want to reset the calendar?'
-              actionText='Reset'
-              deleteFunction={() => {
-                setCalendar(defaultCalendar)
-                saveCalendarToLocalStorage(defaultCalendar)
-                setShowEditCalendar(false)
-                setShowResetWarning(false)
-              }}
-              cancelFunction={() => {
-                setShowResetWarning(false)
-              }}
+              message={resetWarningState.message}
+              actionText={resetWarningState.actionText}
+              deleteFunction={resetWarningState.deleteFunction}
+              cancelFunction={resetWarningState.cancelFunction}
             />
           )
         }
