@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { MdAlarmAdd, MdCheckCircleOutline, MdCheckCircle, MdOutlineHighlightOff } from 'react-icons/md'
 
 const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, saveCalendarToLocalStorage}) => {
@@ -25,6 +26,46 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
         return null
       })
     }
+
+    // Detect which  month is currently in view and add fixed class to month-title-container
+    const handleScroll = () => {
+      let currentMonth = null
+
+      months.map((month, index) => {
+        const monthElement = document.getElementById(`month-${month.monthId}-year-${month.yearIndex}`)
+
+
+        if (monthElement) {
+          const containerTop = monthElement.getBoundingClientRect().top
+
+          console.log("Month: ", month.month, "Container Top: ", containerTop)
+          if (containerTop <= 0) {
+            currentMonth = monthElement
+          }
+        }
+      })
+
+      //  get all .month-title-containers and remove fixed class
+      const monthTitleContainers = document.querySelectorAll('.month-title-container')
+      monthTitleContainers.forEach(monthTitleContainer => {
+        monthTitleContainer.classList.remove('fixed', 'z-50')
+        monthTitleContainer.classList.add('relative')
+      })
+
+      if (currentMonth) {
+        const monthTitleContainer = currentMonth.querySelector('.month-title-container')
+        monthTitleContainer.classList.add('fixed', 'z-50')
+        monthTitleContainer.classList.remove('relative')
+      }
+
+    }
+
+    useEffect(() => {
+      window.addEventListener('scroll', handleScroll)
+      return () => {
+        window.removeEventListener('scroll', handleScroll)
+      }
+    }, [])
   
     return (
       <div className='flex flex-col items-center justify-center mt-8 w-full space-y-10'>
@@ -45,7 +86,11 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
               <div
                 className='flex flex-col items-center justify-center w-full'
               >
-                  <h2 className='text-xl sm:text-2xl font-bold mb-2'>{month.month} {month.year}</h2>
+                  <div className="h-[48px] w-full">
+                    <div className={`month-title-container relative top-0 left-0 right-0 w-full text-center`}>
+                      <h2 className='text-xl sm:text-2xl font-bold p-2'>{month.month} {month.year}</h2>
+                    </div>
+                  </div>
                   <div className={`w-full grid weekdays-${calendar.weekdays.length}`}>
                     {
                       calendar.weekdays.map((weekday, i) => (

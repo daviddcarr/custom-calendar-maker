@@ -69,17 +69,17 @@ function App() {
 
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-6 md:p-12 xl:p-24 bg-black`}
+      className={`flex min-h-screen flex-col items-center justify-between p-6 pt-[calc(1.5rem+50px)] md:p-12 xl:p-24 bg-black`}
     >
 
-      <div className="w-full fixed top-0 left-0 right-0 bg-gray-900 border-b-2 border-gray-800">
+      <div className="w-full fixed z-50 top-0 left-0 right-0 bg-gray-900 border-b-2 border-gray-800">
         <div className="m-auto max-w-[1500px] p-2 flex justify-between">
           <h2 className="font-logo text-2xl capitalize">Calendarling</h2>
         </div>
       </div>
 
 
-       <div className='w-full mt-9'>
+       <div className='w-full'>
 
           <div className="w-full max-w-[1500px] m-auto">
             {/* Calendar Title */}

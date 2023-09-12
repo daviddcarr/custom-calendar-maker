@@ -31,12 +31,12 @@ const JumpToButtons = ({calendar}) => {
         <>
             <div className="fixed bottom-0 left-0 right-0 block lg:hidden">
                 <button 
-                    className="w-full sm:w-auto flex justify-center bg-gray-700 hover:bg-gray-800 active:bg-gray-800 p-2 text-4xl sm:rounded-tr"
+                    className="w-full sm:w-auto flex justify-center bg-gray-800 hover:bg-gray-900 active:bg-gray-800 p-2 text-4xl sm:rounded-tr"
                     onClick={() => {setShowMobileButtons(!showMobileButtons)}}
                     >
-                    <PiArrowsDownUpBold className={` transition-transform ${showMobileButtons ? 'rotate-0' : 'rotate-180'}`} />
+                    <PiArrowsDownUpBold className={` transition-transform duration-500 ${showMobileButtons ? 'rotate-0' : 'rotate-[360deg]'}`} />
                 </button>
-                <div className={`w-[100vw] bg-gray-700 transition-all ${ showMobileButtons ? 'mb-0' : '-mb-[32vh]'} py-[1vh]`}>
+                <div className={`w-[100vw] bg-gray-700 transition-all duration-500 ${ showMobileButtons ? 'mb-0' : '-mb-[32vh]'} py-[1vh]`}>
                     <div className="gradient-mask overflow-scroll max-h-[30vh]">
                         {months.map((month, index) => (
                             <button
