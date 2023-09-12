@@ -75,8 +75,8 @@ function App() {
        <div className='w-full'>
 
           {/* Calendar Title */}
-          <div className="flex">
-            <h1 className='text-4xl font-bold grow'>{calendar.name}</h1>
+          <div className="flex items-center">
+            <h1 className='text-2xl sm:text-4xl font-bold grow'>{calendar.name}</h1>
 
             <button
               className='ml-4 bg-green-500 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'

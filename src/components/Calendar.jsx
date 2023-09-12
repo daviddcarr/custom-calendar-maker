@@ -38,14 +38,14 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
             <div key={index} className="w-full" id={`month-${month.monthId}-year-${month.yearIndex}`}>
               {showDivider && (
                 <div className="w-full mb-4">
-                  <h2 className="text-4xl text-center">{currentYear}</h2>
+                  <h2 className="text-2xl sm:text-4xl text-center">{currentYear}</h2>
                   <div className='w-full border-[1px] border-gray-700'></div>
                 </div>
               )}
               <div
                 className='flex flex-col items-center justify-center w-full'
               >
-                  <h2 className='text-2xl font-bold mb-2'>{month.month} {month.year}</h2>
+                  <h2 className='text-xl sm:text-2xl font-bold mb-2'>{month.month} {month.year}</h2>
                   <div className={`w-full grid weekdays-${calendar.weekdays.length}`}>
                     {
                       calendar.weekdays.map((weekday, i) => (
