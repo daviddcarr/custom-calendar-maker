@@ -63,7 +63,7 @@ const JumpToButtons = ({calendar}) => {
                                 document.getElementById(`month-${month.monthId}-year-${month.yearIndex}`).scrollIntoView({ behavior: 'smooth' })
                             }}
                             >
-                            <span className="month-year grow p-2 text-left bg-gray-800 w-max">{month.month} {month.year}</span> <span className="p-[12px] dot"><MdCircle /></span>
+                            <span className="month-year grow p-2 text-left bg-gray-800 w-max rounded-r">{month.month} {month.year}</span> <span className="p-[12px] dot"><MdCircle /></span>
                         </button>
                     ))}
                 </div>

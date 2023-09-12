@@ -30,6 +30,7 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
     // Detect which  month is currently in view and add fixed class to month-title-container
     const handleScroll = () => {
       let currentMonth = null
+      let lowestNegative = -Infinity
 
       months.map((month, index) => {
         const monthElement = document.getElementById(`month-${month.monthId}-year-${month.yearIndex}`)
@@ -40,7 +41,10 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
 
           console.log("Month: ", month.month, "Container Top: ", containerTop)
           if (containerTop <= 0) {
-            currentMonth = monthElement
+            if (containerTop > lowestNegative) {
+              lowestNegative = containerTop
+              currentMonth = monthElement
+            }
           }
         }
       })
