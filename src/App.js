@@ -5,11 +5,13 @@ import { MdEditCalendar } from 'react-icons/md'
 import Calendar from './components/Calendar'
 import EditEvent from './components/EditEvent'
 import EditCalendar from './components/EditCalendar'
+import JumpToButtons from './components/JumpToButtons'
 
 function App() {
 
   const defaultCalendar = useMemo(() => (
     {
+      name: 'My Calendar',
       months: [
         {
           name: 'Month 1',
@@ -74,7 +76,7 @@ function App() {
 
           {/* Calendar Title */}
           <div className="flex">
-            <h1 className='text-4xl font-bold grow'>Calendar</h1>
+            <h1 className='text-4xl font-bold grow'>{calendar.name}</h1>
 
             <button
               className='ml-4 bg-green-500 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
@@ -109,6 +111,11 @@ function App() {
                 />
             )
           }
+
+          {/* Jump To Buttons */}
+          <JumpToButtons
+            calendar={calendar}
+            />
 
           {/* Render Calendar */}
           <Calendar 

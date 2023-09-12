@@ -24,10 +24,10 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                 <div className='flex'>
                     <h2 className="text-2xl font-bold text-gray-900 grow">Edit Event</h2>
                     <button
-                    className='text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
-                    onClick={() => setShowEditEvent(false)}
-                    >
-                    <AiOutlineCloseCircle className='text-gray-800' />
+                        className='text-3xl text-gray-500 hover:text-gray-700 rounded flex items-center space-x-4'
+                        onClick={() => setShowEditEvent(false)}
+                            >
+                        <AiOutlineCloseCircle />
                     </button>
                 </div>
         
@@ -36,78 +36,81 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                     <div
                     className='space-y-4'
                     >
-                    <div>
-                        <label className='text-gray-900'>Event name:</label>
-                        <input
-                        type="text"
-                        value={event.name}
-                        className='w-full border-[1px] border-gray-900 rounded px-4 py-2 text-gray-900'
-                        onChange={(e) => {
-                            
-                            const events = calendar.events
-                            events[eventIndex].name = e.target.value
-                            setCalendar({...calendar, events: events})
-                        }}
-                        />
-                    </div>
-        
-                    <div>
-                        <label className='text-gray-900'>Event Day / Month / Year:</label>
-                        <div className="flex">
-        
-                        <input
-                            type="number"
-                            value={event.date}
-                            step={1}
-                            className='w-full border-l-[1px] border-y-[1px] border-gray-900 rounded-l px-4 py-2 text-gray-900'
+                        {/* Event Name Field */}
+                        <div>
+                            <label className='text-gray-900'>Event name:</label>
+                            <input
+                            type="text"
+                            value={event.name}
+                            className='w-full border-2 border-gray-300 rounded px-4 py-2 text-gray-900'
                             onChange={(e) => {
+                                
                                 const events = calendar.events
-                                events[eventIndex].date = e.target.value ? parseInt(e.target.value) : 0
+                                events[eventIndex].name = e.target.value
                                 setCalendar({...calendar, events: events})
                             }}
-                        />
-        
-                        <select
-                            value={event.month}
-                            className='w-full border-[1px] border-gray-900 px-4 py-2 text-gray-900'
-                            onChange={(e) => {
-                                const events = calendar.events
-                                events[eventIndex].month = e.target.value ? parseInt(e.target.value) : 0
-                                setCalendar({...calendar, events: events})
-                            }}
-                        >
-                            {
-                            calendar.months.map((month, index) => (
-                                <option key={index} value={index}>{month.name}</option>
-                            ))
-                            }
-                        </select>
-        
-                        <select
-        
-                            value={event.year}
-                            className='w-full border-r-[1px] border-y-[1px] border-gray-900 rounded-r px-4 py-2 text-gray-900'
-                            onChange={(e) => {
-                                const events = calendar.events
-                                events[eventIndex].year = e.target.value ? parseInt(e.target.value) : 0
-                                setCalendar({...calendar, events: events})
-                            }}
-                        >
-                            {
-                                yearStrings.map((year, index) => (
-                                    <option key={index} value={index}>{year}</option>
-                                ))
-                            }
-                        </select>
-        
+                            />
                         </div>
-                    </div>
+        
+                        {/* Event Date FIeld */}
+                        <div>
+                            <label className='text-gray-900'>Event Day / Month / Year:</label>
+                            <div className="flex">
+            
+                                <input
+                                    type="number"
+                                    value={event.date}
+                                    step={1}
+                                    className='w-full border-l-2 border-y-2 border-r-none border-gray-300 rounded-l rounded-r-none px-4 py-2 text-gray-900'
+                                    onChange={(e) => {
+                                        const events = calendar.events
+                                        events[eventIndex].date = e.target.value ? parseInt(e.target.value) : 0
+                                        setCalendar({...calendar, events: events})
+                                    }}
+                                />
+                
+                                <select
+                                    value={event.month}
+                                    className='w-full bg-transparent border-y-2 border-x-[1px] rounded-none border-gray-300 px-4 py-2 text-gray-900'
+                                    onChange={(e) => {
+                                        const events = calendar.events
+                                        events[eventIndex].month = e.target.value ? parseInt(e.target.value) : 0
+                                        setCalendar({...calendar, events: events})
+                                    }}
+                                >
+                                    {
+                                    calendar.months.map((month, index) => (
+                                        <option key={index} value={index}>{month.name}</option>
+                                    ))
+                                    }
+                                </select>
+                
+                                <select
+                
+                                    value={event.year}
+                                    className='w-full border-r-2 border-y-2 border-l-none border-gray-300 rounded-r rounded-l-none px-4 py-2 text-gray-900'
+                                    onChange={(e) => {
+                                        const events = calendar.events
+                                        events[eventIndex].year = e.target.value ? parseInt(e.target.value) : 0
+                                        setCalendar({...calendar, events: events})
+                                    }}
+                                >
+                                    {
+                                        yearStrings.map((year, index) => (
+                                            <option key={index} value={index}>{year}</option>
+                                        ))
+                                    }
+                                </select>
+            
+                            </div>
+                        </div>
 
-                    <div className="grid grid-cols-[auto,1fr]">
-                            <label className='text-gray-900 p-2 border-[1px] rounded-l border-gray-900'>Category:</label>
+                        {/* Event Category Field */}
+                        <div className="grid grid-cols-[auto,1fr]">
+                            <label className='text-gray-900 p-2 border-y-2 border-l-2 border-r-[1px] rounded-l rounded-r-none border-gray-300'>Category:</label>
                             <select
                                 value={event.category}
-                                className='border-y-[1px] border-r-[1px] rounded-r border-gray-900 px-4 py-2 text-gray-900'
+                                className='border-y-2 border-r-2 border-l-none rounded-r rounded-l-none bg-transparent border-gray-300 px-4 py-2 text-gray-900'
                                 onChange={(e) => {
                                     const events = calendar.events
                                     events[eventIndex].category = e.target.value
@@ -132,7 +135,7 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                             <textarea
                                 value={event.description}
                                 rows={6}
-                                className='w-full border-[1px] border-gray-900 rounded px-4 py-2 text-gray-900'
+                                className='w-full border-2 border-gray-300 rounded px-4 py-2 text-gray-900'
                                 onChange={(e) => {
                                     const events = calendar.events
                                     events[eventIndex].description = e.target.value

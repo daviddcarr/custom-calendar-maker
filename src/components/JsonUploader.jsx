@@ -31,6 +31,15 @@ const JsonUploader = ({visibilityFunction, dataUploaded, setCalendar, saveCalend
             dataIsValid = false
         }
 
+        if ( dataIsValid ) {
+            if ( ! dataJson.hasOwnProperty('name')) {
+                dataJson.name = "My Calendar"
+            }
+            if ( ! dataJson.hasOwnProperty('checkedDays')) {
+                dataJson.checkedDays = []
+            }
+        }
+
         return {
             isValid: dataIsValid,
             validData: dataJson
@@ -40,8 +49,10 @@ const JsonUploader = ({visibilityFunction, dataUploaded, setCalendar, saveCalend
     const handleChange = e => {
         const fileReader = new FileReader()
         fileReader.readAsText(e.target.files[0], "UTF-8")
+        
         fileReader.onload = e => {
-            if ( verifyData(e.target.result).isValid ) {
+            const verifiedData = verifyData(e.target.result)
+            if ( verifiedData.isValid ) {
                 setFiles(e.target.result)
                 setFileIsValid(true)
             } else {
@@ -51,9 +62,9 @@ const JsonUploader = ({visibilityFunction, dataUploaded, setCalendar, saveCalend
     }
 
     const saveData = () => {
-        const calendarData = JSON.parse(files)
-        saveCalendarToLocalStorage(calendarData)
-        setCalendar(calendarData)
+        const calendarData = verifyData(files)
+        saveCalendarToLocalStorage(calendarData.validData)
+        setCalendar(calendarData.validData)
         dataUploaded(true)
         visibilityFunction(false)
     }

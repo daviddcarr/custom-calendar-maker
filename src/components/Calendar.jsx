@@ -35,7 +35,7 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
           currentYear = month.year
   
           return (
-            <div key={index} className="w-full">
+            <div key={index} className="w-full" id={`month-${month.monthId}-year-${month.yearIndex}`}>
               {showDivider && (
                 <div className="w-full mb-4">
                   <h2 className="text-4xl text-center">{currentYear}</h2>
@@ -45,7 +45,7 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
               <div
                 className='flex flex-col items-center justify-center w-full'
               >
-                  <h2 className='text-2xl font-bold'>{month.month} {month.year}</h2>
+                  <h2 className='text-2xl font-bold mb-2'>{month.month} {month.year}</h2>
                   <div className={`w-full grid weekdays-${calendar.weekdays.length}`}>
                     {
                       calendar.weekdays.map((weekday, i) => (
@@ -107,12 +107,13 @@ const RenderDaysOfMonth = ({calendar, setCalendar, setCurrentEvent, setShowEditE
   return days.map((day, index) => (
       <div
         key={index}
-      className={`weekday ${ day.isDate ? 'is-date' : 'not-date'} ${checkIfDayIsChecked(day) !== -1 ? 'bg-gray-950' : ''} flex flex-col px-4 py-2 min-h-[150px] border-[1px] border-gray-900`}
+      className={`weekday ${ day.isDate ? 'is-date' : 'not-date'} ${checkIfDayIsChecked(day) !== -1 ? 'bg-gray-950' : ''} flex flex-col min-h-[150px] border-[1px] border-gray-900`}
       >
         {day.isDate && (
           <>
+            {/* Day Title & Check Button */}
             <button
-              className={`group flex justify-between items-center bg-transparent w-full text-left mb-2 ${day.isDate ? 'text-gray-900' : 'text-gray-500'}`}
+              className={`group hover:bg-gray-950 flex justify-between items-center bg-transparent w-full px-4 py-2  text-left ${day.isDate ? 'text-gray-900' : 'text-gray-500'}`}
               onClick={() => {
                 let checkedDays = [...calendar.checkedDays]
                 const dayIndex = checkIfDayIsChecked(day)
@@ -140,43 +141,51 @@ const RenderDaysOfMonth = ({calendar, setCalendar, setCurrentEvent, setShowEditE
                   )
                 }
               </button>
-            <ul className="space-y-2 mb-2">
-              { day.events.length > 0 && day.events.map((event, i) => (
-                <li key={i}>
-                    <button 
-                      className={`bg-red-800 event-${calendar.categories[event.category].color} py-1 px-2 rounded w-full text-left`}
-                      onClick={() => {
-                        const eventId = calendar.events.indexOf(event)
-                        setCurrentEvent(eventId)
-                        setShowEditEvent(true)
-                      }}
-                      >
-                      <h3 className="text-sm">{event.name}</h3>
-                    </button>
-                </li>
-              )) }
-            </ul>
-            <button 
-              className="mt-auto bg-transparent hover:bg-green-400 py-1 px-2 rounded w-full text-center text-gray-700 hover:text-black  flex justify-center"
-              onClick={() => {
-                // Add new current event with this day month and year and open editEvent
-                const events = calendar.events
-                events.push({
-                  name: 'New Event',
-                  date: day.day,
-                  month: month.monthId,
-                  year: month.yearIndex,
-                  category: 0,
-                  description: ''
-                })
-                const newEventId = events.length - 1
-                setCalendar({...calendar, events: events})
-                setCurrentEvent(newEventId)
-                setShowEditEvent(true)
-              }}
-              >
-              <MdAlarmAdd className="text-2xl" />
-            </button>
+
+            <div className="px-4 py-2 grow flex flex-col">
+              {/* Event List */}
+              <ul className="space-y-2 mb-2">
+                { day.events.length > 0 && day.events.map((event, i) => (
+                  <li key={i}>
+                      <button 
+                        className={`bg-red-800 event-${calendar.categories[event.category].color} py-1 px-2 rounded w-full text-left`}
+                        onClick={() => {
+                          const eventId = calendar.events.indexOf(event)
+                          setCurrentEvent(eventId)
+                          setShowEditEvent(true)
+                        }}
+                        >
+                        <h3 className="text-sm">{event.name}</h3>
+                      </button>
+                  </li>
+                )) }
+              </ul>
+
+              {/* Add Event Button */}
+              <button 
+                className="mt-auto bg-transparent hover:bg-green-400 py-1 px-2 rounded w-full text-center text-gray-700 hover:text-black  flex justify-center"
+                onClick={() => {
+                  // Add new current event with this day month and year and open editEvent
+                  const events = calendar.events
+                  events.push({
+                    name: 'New Event',
+                    date: day.day,
+                    month: month.monthId,
+                    year: month.yearIndex,
+                    category: 0,
+                    description: ''
+                  })
+                  const newEventId = events.length - 1
+                  setCalendar({...calendar, events: events})
+                  setCurrentEvent(newEventId)
+                  setShowEditEvent(true)
+                }}
+                >
+                <MdAlarmAdd className="text-2xl" />
+              </button>
+            </div>
+
+
           </>
           )}
       </div>

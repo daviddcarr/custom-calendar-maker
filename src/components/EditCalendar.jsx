@@ -34,9 +34,33 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
       <>
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white p-8 rounded-lg max-h-[80vh] overflow-scroll">
-            <h2 className="text-2xl font-bold text-gray-900">Edit Calendar</h2>
+
+            <div className="flex">
+                <h2 className="text-2xl font-bold text-gray-900 grow">Edit Calendar</h2>
+                <button
+                    className='text-3xl text-gray-500 hover:text-gray-700 rounded flex items-center space-x-4'
+                    onClick={() => {
+                      saveCalendarToLocalStorage(calendar)
+                      setShowEditCalendar(false)        
+                    }}
+                    >
+                    <AiOutlineCloseCircle />
+                </button> 
+            </div>
     
             <div className="mt-4 space-y-8">
+
+              {/* Calendar Name Field */}
+              <div>
+                <label className='text-gray-900'>Calendar name:</label>
+                <input
+
+                  type="text"
+                  value={calendar.name}
+                  className='w-full border-2 border-gray-300 rounded px-4 py-2 text-gray-900'
+                  onChange={(e) => setCalendar({...calendar, name: e.target.value})}
+                />
+              </div>
     
               {/* Start Year Field */}
               <div>
@@ -47,7 +71,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                     value={calendar.startYear}
                     step={1}
                     placeholder='2023'
-                    className='w-full border-[1px] border-gray-900 rounded-l px-4 py-2 text-gray-900'
+                    className='w-full border-r-[1px] border-y-2 border-l-2 border-gray-300 rounded-l rounded-r-none px-4 py-2 text-gray-900'
                     onChange={(e) => setCalendar({...calendar, startYear: e.target.value ? parseInt(e.target.value) : 0})}
                   />
                   <input
@@ -55,7 +79,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                     value={calendar.years}
                     step={1}
                     placeholder='5'
-                    className='w-full border-y-[1px] border-r-[1px] border-gray-900 rounded-r px-4 py-2 text-gray-900'
+                    className='w-full border-y-2 border-r-2 border-gray-300 rounded-r rounded-l-none px-4 py-2 text-gray-900'
                     onChange={(e) => setCalendar({...calendar, years: e.target.value ? parseInt(e.target.value) : 0})}
                   />
                 </div>
@@ -93,14 +117,14 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                         }}
                       />
                       <button
-                        className='p-2'
+                        className='p-2 text-red-800 hover:bg-red-800 hover:text-white rounded-l-none rounded-tr-none rounded-br'
                         onClick={() => {
                           const months = calendar.months
                           months.splice(index, 1)
                           setCalendar({...calendar, months: months})
                         }}
                         >
-                        <MdDeleteForever className='text-red-800' />
+                        <MdDeleteForever className='text-xl' />
                       </button>
                     </div>
                   ))
@@ -125,13 +149,17 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
               {/* Weekdays Field */}
               <div>
                 <label className='text-gray-900'>weekdays:</label>
-                <p className="text-gray-500 text-sm">Enter weekdays separated by a comma and a space</p>
+                <p className="text-gray-500 text-sm">Enter weekdays separated by a comma and a space (12 max.)</p>
                 <input
                   type="text"
                   value={calendar.weekdays.join(', ')}
-                  className='w-full border-[1px] border-gray-900 rounded px-4 py-2 text-gray-900'
+                  className='w-full border-[1px] border-gray-300 rounded px-4 py-2 text-gray-900'
                   onChange={(e) => {
                     const weekdays = e.target.value.split(', ')
+                    // only allow 12 weekdays
+                    if (weekdays.length > 12) {
+                      weekdays.splice(12, weekdays.length - 12)
+                    }
                     setCalendar({...calendar, weekdays: weekdays})
                   }}
                 />
@@ -142,7 +170,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                 <label className='text-gray-900'>First year start day:</label>
                 <select
                   value={calendar.startDay}
-                  className='w-full border-[1px] border-gray-900 rounded px-4 py-2 text-gray-900'
+                  className='w-full border-2 bg-transparent border-gray-300 rounded px-4 py-2 text-gray-900'
                   onChange={(e) => setCalendar({...calendar, startDay: e.target.value ? parseInt(e.target.value) : 0})}
                 >
                   {
@@ -175,7 +203,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                         <label className='text-gray-900 p-2 border-r-[1px] border-gray-300 '>Color:</label>
                         <select
                           value={category.color}
-                          className='w-full rounded px-4 py-2 text-gray-900'
+                          className='w-full rounded px-4 py-2 text-gray-900 bg-transparent'
                           onChange={(e) => {
                             const categories = calendar.categories
                             categories[index].color = e.target.value
@@ -196,14 +224,14 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                         </select>
 
                         <button
-                          className='p-2'
+                          className='p-2 text-red-800 hover:bg-red-800 hover:text-white rounded-l-none rounded-tr-none rounded-br'
                           onClick={() => {
                             const categories = calendar.categories
                             categories.splice(index, 1)
                             setCalendar({...calendar, categories: categories})
                           }}
                           >
-                          <MdDeleteForever className='text-red-800' />
+                          <MdDeleteForever className='text-xl' />
                         </button>
                       </div>
                     ))
@@ -281,22 +309,9 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
 
               </div>
             </div>
-
-
-
-
     
           </div>
     
-          <button
-            className='fixed top-4 right-4 bg-red-800 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
-            onClick={() => {
-              saveCalendarToLocalStorage(calendar)
-              setShowEditCalendar(false)
-            }}
-            >
-            <AiOutlineCloseCircle className='text-white' /> <span>Close</span>
-          </button>
         </div>      
 
         {
