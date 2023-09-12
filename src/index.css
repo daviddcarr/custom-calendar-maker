@@ -3,7 +3,11 @@
 @tailwind utilities;
 
 body {
-  @apply bg-black text-white;
+  @apply bg-black text-white font-heading;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  @apply font-heading uppercase;
 }
 
 .jump-to-buttons {
