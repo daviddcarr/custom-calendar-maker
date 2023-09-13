@@ -13,15 +13,15 @@ const JumpToButtons = ({calendar}) => {
         const updatedMonths = []
 
         for (let i = 0; i < calendar.years; i++) {
-            calendar.months.map((month, index) => {
+            for (let index = 0; index < calendar.months.length; index++) {
+                const month = calendar.months[index]
                 updatedMonths.push({
                     monthId: index,
                     month: month.name,
                     year: calendar.startYear + i,
                     yearIndex: i,
                 })
-                return null
-            })
+            }
         }
 
         setMonths(updatedMonths)

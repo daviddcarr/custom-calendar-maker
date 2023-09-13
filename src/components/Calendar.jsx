@@ -9,7 +9,8 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
   
   
     for (let i = 0; i < calendar.years; i++) {
-      calendar.months.map((month, index) => {
+      for(let index = 0; index < calendar.months.length; index++) {
+        const month = calendar.months[index]
         const events = calendar.events.filter(event => event.month === calendar.months.indexOf(month) && event.year === i)
   
         months.push({
@@ -22,9 +23,7 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
           events: events
         })
         startDay = ((month.days + startDay) % calendar.weekdays.length)
-
-        return null
-      })
+      }
     }
 
     // Detect which  month is currently in view and add fixed class to month-title-container
@@ -32,14 +31,14 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
       let currentMonth = null
       let lowestNegative = -Infinity
 
-      //months.map((month, index) => {
       for (let i = 0; i < months.length; i++) {
         const month = months[i]
         const monthElement = document.getElementById(`month-${month.monthId}-year-${month.yearIndex}`)
 
-
+        console.log("Month ID: ", month.monthId)
         if (monthElement) {
           const containerTop = monthElement.getBoundingClientRect().top
+          console.log("Month ID: ", month.monthId, "Container Top: ", containerTop)
           if (containerTop <= 0) {
             if (containerTop > lowestNegative) {
               lowestNegative = containerTop
