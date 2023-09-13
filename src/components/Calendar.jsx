@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { MdAlarmAdd, MdCheckCircleOutline, MdCheckCircle, MdOutlineHighlightOff } from 'react-icons/md'
 
 const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, saveCalendarToLocalStorage}) => {
 
+  let startDay = calendar.startDay
+  let currentYear = calendar.startYear
+  
+  // const months = []
+  const months = useMemo(() => {
     const months = []
-    let startDay = calendar.startDay
-    let currentYear = calendar.startYear
-  
-  
     for (let i = 0; i < calendar.years; i++) {
       for(let index = 0; index < calendar.months.length; index++) {
         const month = calendar.months[index]
@@ -25,103 +26,108 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
         startDay = ((month.days + startDay) % calendar.weekdays.length)
       }
     }
+    return months
+  })
 
-    // Detect which  month is currently in view and add fixed class to month-title-container
-    const handleScroll = () => {
-      let currentMonth = null
-      let lowestNegative = -Infinity
 
-      for (let i = 0; i < months.length; i++) {
-        const month = months[i]
-        const monthElement = document.getElementById(`month-${month.monthId}-year-${month.yearIndex}`)
+  // Detect which  month is currently in view and add fixed class to month-title-container
+  const handleScroll = () => {
+    let currentMonth = null
+    let lowestNegative = -Infinity
 
-        if (monthElement) {
-          const containerTop = monthElement.getBoundingClientRect().top
+    console.log("Months: ", months.length)
+    for (let i = 0; i < months.length; i++) {
+      const month = months[i]
+      const monthElement = document.getElementById(`month-${month.monthId}-year-${month.yearIndex}`)
 
-          console.log("Month ID: ", month.monthId, "Container Top: ", containerTop, "Lowest Negative: ", lowestNegative)
-          if (containerTop <= 0) {
-            if (containerTop > lowestNegative) {
-              lowestNegative = containerTop
-              currentMonth = monthElement
-            }
+      console.log("Month ID:" , month.monthId)
+      if (monthElement) {
+        const containerTop = monthElement.getBoundingClientRect().top
+
+        console.log("Month ID: ", month.monthId, "Container Top: ", containerTop, "Lowest Negative: ", lowestNegative)
+        if (containerTop <= 0) {
+          if (containerTop > lowestNegative) {
+            lowestNegative = containerTop
+            currentMonth = monthElement
           }
         }
       }
-
-      //  get all .month-title-containers and remove fixed class
-      const monthTitleContainers = document.querySelectorAll('.month-title-container')
-      monthTitleContainers.forEach(monthTitleContainer => {
-        monthTitleContainer.classList.remove('fixed', 'z-50')
-        monthTitleContainer.classList.add('relative')
-      })
-
-      if (currentMonth) {
-        const monthTitleContainer = currentMonth.querySelector('.month-title-container')
-        monthTitleContainer.classList.add('fixed', 'z-50')
-        monthTitleContainer.classList.remove('relative')
-      }
-
     }
 
-    useEffect(() => {
-      window.addEventListener('scroll', handleScroll)
-      return () => {
-        window.removeEventListener('scroll', handleScroll)
-      }
-    }, [])
-  
-    return (
-      <div className='flex flex-col items-center justify-center mt-8 w-full space-y-10'>
-  
-        {months.map((month, index) => {
-  
-          const showDivider = currentYear !== month.year
-          currentYear = month.year
-  
-          return (
-            <div key={index} className="w-full" id={`month-${month.monthId}-year-${month.yearIndex}`}>
-              {showDivider && (
-                <div className="w-full mb-4">
-                  <h2 className="text-2xl sm:text-4xl text-center">{currentYear}</h2>
-                  <div className='w-full border-[1px] border-gray-700'></div>
-                </div>
-              )}
-              <div
-                className='flex flex-col items-center justify-center w-full'
-              >
-                  <div className="h-[48px] w-full">
-                    <div className={`month-title-container relative top-0 left-0 right-0 w-full h-[48px] flex items-center justify-end md:justify-center`}>
-                      <h2 className='text-xl sm:text-2xl font-bold py-2 px-6 md:px-12 xl:px-24'>{month.month} {month.year}</h2>
-                    </div>
-                  </div>
-                  <div className={`w-full grid weekdays-${calendar.weekdays.length}`}>
-                    {
-                      calendar.weekdays.map((weekday, i) => (
-                        <div
-                          key={i}
-                          className='weekday-title px-4 py-2 border-[1px] border-gray-900'
-                        >
-                          {weekday}
-                        </div>
-                      ))
-                    }
-                    <RenderDaysOfMonth 
-                      calendar={calendar} 
-                      setCalendar={setCalendar}
-                      setCurrentEvent={setCurrentEvent} 
-                      setShowEditEvent={setShowEditEvent} 
-                      month={month}
-                      saveCalendarToLocalStorage={saveCalendarToLocalStorage}
-                      />
-                  </div>
-              </div>
-            </div>
-  
-        )})}
-  
-      </div>
-    )
+    //  get all .month-title-containers and remove fixed class
+    const monthTitleContainers = document.querySelectorAll('.month-title-container')
+    monthTitleContainers.forEach(monthTitleContainer => {
+      monthTitleContainer.classList.remove('fixed', 'z-50')
+      monthTitleContainer.classList.add('relative')
+    })
+
+    if (currentMonth) {
+      const monthTitleContainer = currentMonth.querySelector('.month-title-container')
+      monthTitleContainer.classList.add('fixed', 'z-50')
+      monthTitleContainer.classList.remove('relative')
+    }
+
   }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [months])
+
+  return (
+    <div className='flex flex-col items-center justify-center mt-8 w-full space-y-10'>
+
+      {months.map((month, index) => {
+
+        const showDivider = currentYear !== month.year
+        currentYear = month.year
+
+        return (
+          <div key={index} className="w-full" id={`month-${month.monthId}-year-${month.yearIndex}`}>
+            {showDivider && (
+              <div className="w-full mb-4">
+                <h2 className="text-2xl sm:text-4xl text-center">{currentYear}</h2>
+                <div className='w-full border-[1px] border-gray-700'></div>
+              </div>
+            )}
+            <div
+              className='flex flex-col items-center justify-center w-full'
+            >
+                <div className="h-[48px] w-full">
+                  <div className={`month-title-container relative top-0 left-0 right-0 w-full h-[48px] flex items-center justify-end md:justify-center`}>
+                    <h2 className='text-xl sm:text-2xl font-bold py-2 px-6 md:px-12 xl:px-24'>{month.month} {month.year}</h2>
+                  </div>
+                </div>
+                <div className={`w-full grid weekdays-${calendar.weekdays.length}`}>
+                  {
+                    calendar.weekdays.map((weekday, i) => (
+                      <div
+                        key={i}
+                        className='weekday-title px-4 py-2 border-[1px] border-gray-900'
+                      >
+                        {weekday}
+                      </div>
+                    ))
+                  }
+                  <RenderDaysOfMonth 
+                    calendar={calendar} 
+                    setCalendar={setCalendar}
+                    setCurrentEvent={setCurrentEvent} 
+                    setShowEditEvent={setShowEditEvent} 
+                    month={month}
+                    saveCalendarToLocalStorage={saveCalendarToLocalStorage}
+                    />
+                </div>
+            </div>
+          </div>
+
+      )})}
+
+    </div>
+  )
+}
   
 export default Calendar
 
