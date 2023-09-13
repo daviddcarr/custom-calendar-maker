@@ -37,6 +37,8 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
 
         if (monthElement) {
           const containerTop = monthElement.getBoundingClientRect().top
+
+          console.log("Month ID: ", month.monthId, "Container Top: ", containerTop, "Lowest Negative: ", lowestNegative)
           if (containerTop <= 0) {
             if (containerTop > lowestNegative) {
               lowestNegative = containerTop
