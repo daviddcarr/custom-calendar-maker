@@ -91,8 +91,8 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
                 className='flex flex-col items-center justify-center w-full'
               >
                   <div className="h-[48px] w-full">
-                    <div className={`month-title-container relative top-0 left-0 right-0 w-full text-center`}>
-                      <h2 className='text-xl sm:text-2xl font-bold p-2'>{month.month} {month.year}</h2>
+                    <div className={`month-title-container relative top-0 left-0 right-0 w-full h-[48px] flex items-center justify-end md:justify-center`}>
+                      <h2 className='text-xl sm:text-2xl font-bold py-2 px-6 md:px-12 xl:px-24'>{month.month} {month.year}</h2>
                     </div>
                   </div>
                   <div className={`w-full grid weekdays-${calendar.weekdays.length}`}>
