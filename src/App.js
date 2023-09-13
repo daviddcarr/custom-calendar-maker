@@ -33,7 +33,7 @@ function App() {
       className={`flex min-h-screen flex-col items-center justify-between p-6 md:p-12 xl:p-24 pt-[calc(1.5rem+50px)] bg-black`}
     >
 
-      <div className="w-full fixed z-50 top-0 left-0 right-0 bg-gray-900 border-b-2 border-gray-800">
+      <div className="w-full fixed z-50 top-0 left-0 right-0 bg-gray-900 bg-opacity-70 backdrop-blur-sm">
         <div className="m-auto max-w-[1500px] py-2 px-6 md:px-12 xl:px-24 flex justify-between">
           <h2 className="font-logo text-2xl capitalize">Calendarling</h2>
         </div>
