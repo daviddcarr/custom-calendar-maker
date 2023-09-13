@@ -30,11 +30,11 @@ function App() {
 
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-6 md:p-12 xl:p-24 pt-[calc(1.5rem+50px)] bg-black`}
+      className={`flex min-h-screen flex-col items-center justify-between p-6 md:p-12 xl:p-24 pt-[calc(1.5rem+50px)] md:pt-[calc(3rem+50px)] bg-black`}
     >
 
-      <div className="w-full fixed z-50 top-0 left-0 right-0 bg-gray-900 bg-opacity-70 backdrop-blur-sm">
-        <div className="m-auto max-w-[1500px] py-2 px-6 md:px-12 xl:px-24 flex justify-between">
+      <div className="w-full fixed z-50 top-0 left-0 right-0 px-6 md:px-12 xl:px-24 bg-gray-900 bg-opacity-70 backdrop-blur-sm">
+        <div className="m-auto max-w-[1500px] py-2 flex justify-between">
           <h2 className="font-logo text-2xl capitalize">Calendarling</h2>
         </div>
       </div>
@@ -48,7 +48,7 @@ function App() {
               <h1 className='text-2xl sm:text-4xl font-bold grow'>{calendar.name}</h1>
 
               <button
-                className='ml-4 bg-green-500 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                className='ml-4 bg-green-500 hover:bg-green-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
                 onClick={() => setShowEditCalendar(true)} 
                 >
                 <MdEditCalendar />

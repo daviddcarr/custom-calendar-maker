@@ -153,7 +153,7 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                 <div className="flex gap-4">
         
                     <button
-                    className='bg-green-500 text-white text-lg px-4 py-2 rounded flex items-center space-x-2 grow md:grow-0'
+                    className='bg-green-500 hover:bg-green-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-2 grow md:grow-0'
                     onClick={() => {
                         const events = calendar.events
                         events[eventIndex] = event
@@ -167,7 +167,7 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                     </button>
         
                     <button
-                    className='bg-red-800 text-white text-lg px-4 py-2 rounded flex items-center space-x-2'
+                    className='bg-red-800 hover:bg-red-900 text-white text-lg px-4 py-2 rounded flex items-center space-x-2'
                     onClick={() => {
                         setShowDeleteWarning(true)
                     }}

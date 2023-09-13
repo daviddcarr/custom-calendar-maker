@@ -85,7 +85,7 @@ const JsonUploader = ({visibilityFunction, dataUploaded, setCalendar, saveCalend
         </div>
         {
             files !== "" && fileIsValid 
-            ? <input type="submit" value="Submit" className='bg-green-500 text-white py-2 rounded-lg' onClick={saveData} />
+            ? <input type="submit" value="Submit" className='bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg' onClick={saveData} />
             : <p>Error: Your file contains invalid data.</p>
         }
         {

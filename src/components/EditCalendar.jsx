@@ -162,7 +162,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                 }
     
                 <button
-                  className='bg-green-500 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                  className='bg-green-500 hover:bg-green-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
                   onClick={() => {
                     const months = calendar.months
                     months.push({
@@ -244,6 +244,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                           <option value='red'>red</option>
                           <option value='orange'>orange</option>
                           <option value='yellow'>yellow</option>
+                          <option value='lime'>lime</option>
                           <option value='green'>green</option>
                           <option value='blue'>blue</option>
                           <option value='cyan'>cyan</option>
@@ -252,6 +253,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                           <option value='magenta'>magenta</option>
                           <option value='pink'>pink</option>
                           <option value='gray'>gray</option>
+                          <option value='slate'>slate</option>
                         </select>
 
                           { index !== 0 &&  (
@@ -290,7 +292,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                   }
       
                   <button
-                    className='bg-green-500 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                    className='bg-green-500 hover:bg-green-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
                     onClick={() => {
                       const categories = calendar.categories
                       categories.push({
@@ -312,14 +314,14 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                 <div className="flex gap-2 w-full">
 
                   <button
-                    className='bg-green-500 grow text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                    className='bg-green-500 hover:bg-green-600 grow text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
                     onClick={downloadJson}
                     >
                       Export
                   </button>
 
                   <button
-                    className='bg-green-500 grow text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                    className='bg-green-500 hover:bg-green-600 grow text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
                     onClick={() => {
                       setShowFileUploader(!showFileUploader)
                     }}
@@ -341,7 +343,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
               {/* Save  Button */}
               <div  className="flex gap-2">
                 <button
-                  className='bg-green-500 text-white text-lg px-4 py-2 rounded flex items-center space-x-4 grow'
+                  className='bg-green-500 hover:bg-green-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-4 grow'
                   onClick={() => {
                     saveCalendarToLocalStorage(calendar)
                     setShowEditCalendar(false)
@@ -351,7 +353,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                 </button>
 
                 <button
-                  className='bg-red-800 text-white text-lg px-4 py-2 rounded flex items-center space-x-4 shrink'
+                  className='bg-red-800 hover:bg-red-900 text-white text-lg px-4 py-2 rounded flex items-center space-x-4 shrink'
                   onClick={() => {
                     setResetWarningState({
                       message: 'Are you sure you want to reset the calendar?',
