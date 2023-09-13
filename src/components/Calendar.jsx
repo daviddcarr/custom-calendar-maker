@@ -132,7 +132,11 @@ export default Calendar
 const RenderDaysOfMonth = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, month, saveCalendarToLocalStorage}) => {
 
   const days = []
-  const cellCount = (month.days + month.startDay) + (calendar.weekdays.length - ((month.days + month.startDay) % calendar.weekdays.length))
+
+  const daysPlusStartDay = month.days + month.startDay
+  const remainingDays = daysPlusStartDay % calendar.weekdays.length
+  const remainingDaysToFill = remainingDays !== 0 ? calendar.weekdays.length - remainingDays : 0
+  const cellCount = daysPlusStartDay + remainingDaysToFill
 
   for (let i = 0; i < cellCount; i++) {
     const dateIndex = i - month.startDay

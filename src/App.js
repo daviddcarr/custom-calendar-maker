@@ -7,48 +7,9 @@ import EditEvent from './components/EditEvent'
 import EditCalendar from './components/EditCalendar'
 import JumpToButtons from './components/JumpToButtons'
 
-function App() {
+import defaultCalendar from './data/default'
 
-  const defaultCalendar = useMemo(() => (
-    {
-      name: 'My Calendar',
-      months: [
-        {
-          name: 'Month 1',
-          days: 30
-        },
-      ],
-      startDay: 1,
-      startYear: 2023,
-      years: 1,
-      weekdays: [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday'
-      ],
-      categories: [
-        {
-          name: 'Holiday',
-          color: 'red'
-        }
-      ],
-      events: [
-        {
-          name: 'New Year\'s Day',
-          date: 1,
-          month: 0,
-          year: 0,
-          category: 0,
-          description: 'New Year\'s Day is the first day of the Gregorian calendar, which is widely used in many countries such as the USA.'
-        }
-      ],
-      checkedDays: []
-    }
-  ), [])
+function App() {
 
   const [showEditCalendar, setShowEditCalendar] = useState(false)
   const [showEditEvent, setShowEditEvent] = useState(false)
