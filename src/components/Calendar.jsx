@@ -35,16 +35,13 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
     let currentMonth = null
     let lowestNegative = -Infinity
 
-    console.log("Months: ", months.length)
     for (let i = 0; i < months.length; i++) {
       const month = months[i]
       const monthElement = document.getElementById(`month-${month.monthId}-year-${month.yearIndex}`)
 
-      console.log("Month ID:" , month.monthId)
       if (monthElement) {
         const containerTop = monthElement.getBoundingClientRect().top
 
-        console.log("Month ID: ", month.monthId, "Container Top: ", containerTop, "Lowest Negative: ", lowestNegative)
         if (containerTop <= 0) {
           if (containerTop > lowestNegative) {
             lowestNegative = containerTop
