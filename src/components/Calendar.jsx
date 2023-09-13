@@ -35,10 +35,8 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
         const month = months[i]
         const monthElement = document.getElementById(`month-${month.monthId}-year-${month.yearIndex}`)
 
-        console.log("Month ID: ", month.monthId)
         if (monthElement) {
           const containerTop = monthElement.getBoundingClientRect().top
-          console.log("Month ID: ", month.monthId, "Container Top: ", containerTop)
           if (containerTop <= 0) {
             if (containerTop > lowestNegative) {
               lowestNegative = containerTop
@@ -165,7 +163,6 @@ const RenderDaysOfMonth = ({calendar, setCalendar, setCurrentEvent, setShowEditE
               onClick={() => {
                 let checkedDays = [...calendar.checkedDays]
                 const dayIndex = checkIfDayIsChecked(day)
-                console.log("Day Index: ", dayIndex)
                 if (dayIndex === -1) {
                   checkedDays.push({
                     day: day.day,
