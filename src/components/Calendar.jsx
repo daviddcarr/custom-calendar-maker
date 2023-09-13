@@ -32,14 +32,14 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
       let currentMonth = null
       let lowestNegative = -Infinity
 
-      months.map((month, index) => {
+      //months.map((month, index) => {
+      for (let i = 0; i < months.length; i++) {
+        const month = months[i]
         const monthElement = document.getElementById(`month-${month.monthId}-year-${month.yearIndex}`)
 
 
         if (monthElement) {
           const containerTop = monthElement.getBoundingClientRect().top
-
-          console.log("Month: ", month.month, "Container Top: ", containerTop)
           if (containerTop <= 0) {
             if (containerTop > lowestNegative) {
               lowestNegative = containerTop
@@ -47,7 +47,7 @@ const Calendar = ({calendar, setCalendar, setCurrentEvent, setShowEditEvent, sav
             }
           }
         }
-      })
+      }
 
       //  get all .month-title-containers and remove fixed class
       const monthTitleContainers = document.querySelectorAll('.month-title-container')
