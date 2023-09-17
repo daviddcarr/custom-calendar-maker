@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { MdDeleteForever, MdFormatListBulletedAdd, MdSave } from 'react-icons/md'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
+import { TbFileImport, TbFileExport } from 'react-icons/tb'
 
 import DeleteWarning from './DeleteWarning'
 import JsonUploader from './JsonUploader'
@@ -11,6 +12,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
     const [calendarJSON, setCalendarJSON] = useState(JSON.stringify(calendar, null, 2))
 
     const [showFileUploader, setShowFileUploader] = useState(false)
+    const [importEvents, setImportEvents] = useState(false)
     const [dataUploaded, setDataUploaded] = useState(false)
 
     const [showResetWarning, setShowResetWarning] = useState(false)
@@ -40,13 +42,13 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
     return (
       <>
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white p-8 rounded-lg max-h-[80vh] overflow-scroll">
+          <div className="bg-gray-800 backdrop-blur-sm bg-opacity-80 p-8 rounded-lg max-h-[80vh] overflow-scroll">
 
             {/* Title and Close Button */}
             <div className="flex flex-wrap">
-                <h2 className="text-2xl font-bold text-gray-900 grow">Edit Calendar</h2>
+                <h2 className="text-2xl font-bold text-white grow">Edit Calendar</h2>
                 <button
-                    className='text-3xl text-gray-500 hover:text-gray-700 rounded flex items-center space-x-4'
+                    className='text-3xl text-gray-500 hover:text-gray-300 rounded flex items-center space-x-4'
                     onClick={() => {
                       saveCalendarToLocalStorage(calendar)
                       setShowEditCalendar(false)        
@@ -56,7 +58,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                 </button> 
 
                 <div className="w-full flex-grow">
-                  <p className="text-sm text-gray-700 max-w-md">Warning, removing certain items from calendar after adding events can cause errors or unwanted behavior.</p>
+                  <p className="text-sm text-gray-200 max-w-md">Warning, removing certain items from calendar after adding events can cause errors or unwanted behavior.</p>
                 </div>
             </div>
     
@@ -64,26 +66,26 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
 
               {/* Calendar Name Field */}
               <div>
-                <label className='text-gray-900'>Calendar name:</label>
+                <label className='text-white'>Calendar name:</label>
                 <input
 
                   type="text"
                   value={calendar.name}
-                  className='w-full border-2 border-gray-300 rounded px-4 py-2 text-gray-900'
+                  className='w-full border-2 border-gray-500 bg-gray-700 rounded px-4 py-2 text-white'
                   onChange={(e) => setCalendar({...calendar, name: e.target.value})}
                 />
               </div>
     
               {/* Start Year Field */}
               <div>
-                <label className='text-gray-900'>start year and year count:</label>
+                <label className='text-white'>start year and year count:</label>
                 <div className="flex">
                   <input
                     type="number"
                     value={calendar.startYear}
                     step={1}
                     placeholder='2023'
-                    className='w-full border-r-[1px] border-y-2 border-l-2 border-gray-300 rounded-l rounded-r-none px-4 py-2 text-gray-900'
+                    className='w-full border-r-[1px] border-y-2 border-l-2 border-gray-500 bg-gray-700 rounded-l rounded-r-none px-4 py-2 text-white'
                     onChange={(e) => setCalendar({...calendar, startYear: e.target.value ? parseInt(e.target.value) : 0})}
                   />
                   <input
@@ -91,7 +93,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                     value={calendar.years}
                     step={1}
                     placeholder='5'
-                    className='w-full border-y-2 border-r-2 border-gray-300 rounded-r rounded-l-none px-4 py-2 text-gray-900'
+                    className='w-full border-y-2 border-r-2 border-gray-500 bg-gray-700 rounded-r rounded-l-none px-4 py-2 text-white'
                     onChange={(e) => setCalendar({...calendar, years: e.target.value ? parseInt(e.target.value) : 0})}
                   />
                 </div>
@@ -100,28 +102,28 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
     
               {/* Months Field */}
               <div className="flex flex-col space-y-2">
-                <label className='text-gray-900'>Months:</label>
+                <label className='text-white'>Months:</label>
     
                 {
                   calendar.months.map((month, index) => (
-                    <div key={index} className='border-[2px] border-gray-300 rounded grid grid-cols-[auto,1fr,auto]'>
-                      <label className='text-gray-900 p-2 border-r-[1px] border-b-[1px] border-gray-300'>month:</label>
+                    <div key={index} className='border-[2px] border-gray-500 bg-gray-700 rounded grid grid-cols-[auto,1fr,auto]'>
+                      <label className='text-white p-2 border-r-[1px] border-b-[1px] border-gray-500 bg-gray-700'>month:</label>
                       <input
                         type="text"
                         value={month.name}
-                        className='w-full border-b-[1px] border-gray-300 px-4 py-2 text-gray-900 col-span-2'
+                        className='w-full border-b-[1px] border-gray-500 bg-gray-700 px-4 py-2 text-white col-span-2'
                         onChange={(e) => {
                           const months = calendar.months
                           months[index].name = e.target.value
                           setCalendar({...calendar, months: months})
                         }}
                       />
-                      <label className='text-gray-900 p-2 border-r-[1px] border-gray-300 '>days:</label>
+                      <label className='text-white p-2 border-r-[1px] border-gray-500 bg-gray-700 '>days:</label>
                       <input
                         type="number"
                         value={month.days}
                         step={1}
-                        className='w-full rounded px-4 py-2 text-gray-900'
+                        className='w-full rounded px-4 py-2 text-white bg-transparent'
                         onChange={(e) => {
                           const months = calendar.months
                           months[index].days = e.target.value ? parseInt(e.target.value) : 0
@@ -129,7 +131,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                         }}
                       />
                       <button
-                        className='p-2 text-red-800 hover:bg-red-800 hover:text-white rounded-l-none rounded-tr-none rounded-br'
+                        className='p-2 text-red-500 hover:bg-red-600 hover:text-white rounded-l-none rounded-tr-none rounded-br'
                         onClick={() => {
                           setResetWarningState({
                             message: 'Are you sure you want to delete this month? All events in this month will be deleted.',
@@ -179,12 +181,12 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
     
               {/* Weekdays Field */}
               <div>
-                <label className='text-gray-900'>weekdays:</label>
+                <label className='text-white'>weekdays:</label>
                 <p className="text-gray-500 text-sm">Enter weekdays separated by a comma and a space (12 max.)</p>
                 <input
                   type="text"
                   value={calendar.weekdays.join(', ')}
-                  className='w-full border-[1px] border-gray-300 rounded px-4 py-2 text-gray-900'
+                  className='w-full border-[1px] border-gray-500 bg-gray-700 rounded px-4 py-2 text-white'
                   onChange={(e) => {
                     const weekdays = e.target.value.split(', ')
                     // only allow 12 weekdays
@@ -198,10 +200,10 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
     
               {/* First Year Start Day */}
               <div>
-                <label className='text-gray-900'>First year start day:</label>
+                <label className='text-white'>First year start day:</label>
                 <select
                   value={calendar.startDay}
-                  className='w-full border-2 bg-transparent border-gray-300 rounded px-4 py-2 text-gray-900'
+                  className='w-full border-2 bg-transparent border-gray-500 bg-gray-700 rounded px-4 py-2 text-white'
                   onChange={(e) => setCalendar({...calendar, startDay: e.target.value ? parseInt(e.target.value) : 0})}
                 >
                   {
@@ -214,27 +216,27 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
     
               {/* Categories Field */}
               <div className="flex flex-col space-y-2">
-                  <label className='text-gray-900'>Categories:</label>
+                  <label className='text-white'>Categories:</label>
       
                   {
                     calendar.categories.map((category, index) => (
-                      <div key={index} className='border-[2px] border-gray-300 rounded grid grid-cols-[auto,1fr,auto]'>
+                      <div key={index} className='border-[2px] border-gray-500 bg-gray-700 rounded grid grid-cols-[auto,1fr,auto]'>
 
-                        <label className='text-gray-900 p-2 border-r-[1px] border-b-[1px] border-gray-300'>Name:</label>
+                        <label className='text-white p-2 border-r-[1px] border-b-[1px] border-gray-500 bg-gray-700'>Name:</label>
                         <input
                           type="text"
                           value={category.name}
-                          className='w-full border-b-[1px] border-gray-300 px-4 py-2 text-gray-900 col-span-2'
+                          className='w-full border-b-[1px] border-gray-500 bg-gray-700 px-4 py-2 text-white col-span-2'
                           onChange={(e) => {
                             const categories = calendar.categories
                             categories[index].name = e.target.value
                             setCalendar({...calendar, categories: categories})
                           }}
                         />
-                        <label className='text-gray-900 p-2 border-r-[1px] border-gray-300 '>Color:</label>
+                        <label className='text-white p-2 border-r-[1px] border-gray-500 bg-gray-700 '>Color:</label>
                         <select
                           value={category.color}
-                          className={`w-full rounded px-4 py-2 text-gray-900 bg-transparent ${ index === 0 ? 'col-span-2' : '' } `}
+                          className={`w-full rounded px-4 py-2 text-white bg-transparent ${ index === 0 ? 'col-span-2' : '' } `}
                           onChange={(e) => {
                             const categories = calendar.categories
                             categories[index].color = e.target.value
@@ -311,32 +313,48 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
 
               {/* Text field to load calendar JSON to localStorage */}
               <div className="space-y-2">
+
+                <h3>Export / Import Data</h3>
                 <div className="flex gap-2 w-full">
 
                   <button
-                    className='bg-green-500 hover:bg-green-600 grow text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                    className='grow bg-green-500 hover:bg-green-600  text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
                     onClick={downloadJson}
                     >
-                      Export
+                      <TbFileExport className='text-white' /> Export
                   </button>
 
                   <button
                     className='bg-green-500 hover:bg-green-600 grow text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
                     onClick={() => {
+                      setImportEvents(false)
                       setShowFileUploader(!showFileUploader)
                     }}
                     >
-                      Import
+                     <TbFileImport className='text-white' /> Import
+                  </button>
+                  <button
+                    className='bg-green-500 hover:bg-green-600 shrink text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                    onClick={() => {
+                      setImportEvents(true)
+                      setShowFileUploader(!showFileUploader)
+                    }}
+                    >
+                      <TbFileImport className='text-white' /> Import Events
                   </button>
 
                 </div>
 
+
                 {showFileUploader && (
                     <JsonUploader
                       visibilityFunction={setShowFileUploader}
+                      calendar={calendar}
                       setCalendar={setCalendar}
                       saveCalendarToLocalStorage={saveCalendarToLocalStorage}
-                      dataUploaded={setDataUploaded} />
+                      dataUploaded={setDataUploaded}
+                      isEvents={importEvents}
+                      />
                 )}
               </div>
 
