@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { MdDeleteForever, MdFormatListBulletedAdd, MdSave } from 'react-icons/md'
 import { AiOutlineCloseCircle } from 'react-icons/ai'
@@ -42,6 +42,28 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
       }
     }
 
+    // Add event listener to #calendar-form to detect when user is scrolled all the way down or up and replace "gradient-mask-small" class with "gradient-mask-top-small" or "gradient-mask-bottom-small" respectively
+    useEffect(() => {
+      const calendarForm = document.getElementById('calendar-form')
+
+      const handleScroll = () => {
+        if (calendarForm.scrollTop === 0) {
+          calendarForm.classList.add('mask-hide-top')
+        } else if (calendarForm.scrollTop + calendarForm.clientHeight === calendarForm.scrollHeight) {
+          calendarForm.classList.add('mask-hide-bottom')
+        } else {
+          calendarForm.classList.remove('mask-hide-top')
+          calendarForm.classList.remove('mask-hide-bottom')
+        }
+      }
+
+      calendarForm.addEventListener('scroll', handleScroll)
+
+      return () => {
+        calendarForm.removeEventListener('scroll', handleScroll)
+      }
+    })
+
     return (
       <>
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center p-4">
@@ -66,7 +88,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
             </div>
     
             {/* Calendar Data Form */}
-            <div className="mt-4 space-y-8 overflow-scroll px-8 gradient-mask-small py-6">
+            <div id="calendar-form" className="mt-4 space-y-8 overflow-scroll px-8 mask-animation gradient-mask-small mask-hide-top">
 
               {/* Calendar Name Field */}
               <div>
