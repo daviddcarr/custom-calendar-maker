@@ -126,15 +126,16 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                         type="number"
                         value={month.days}
                         step={1}
-                        className='w-full rounded px-4 py-2 text-white bg-transparent'
+                        className={`w-full rounded px-4 py-2 text-white bg-transparent ${ index === 0 ? 'col-span-2' : '' }`}
                         onChange={(e) => {
                           const months = calendar.months
                           months[index].days = e.target.value ? parseInt(e.target.value) : 0
                           setCalendar({...calendar, months: months})
                         }}
                       />
+                      { index !== 0 &&  (
                       <button
-                        className='p-2 text-red-500 hover:bg-red-600 hover:text-white rounded-l-none rounded-tr-none rounded-br'
+                        className='p-2 text-red-400 hover:bg-red-400 hover:text-white rounded-l-none rounded-tr-none rounded-br'
                         onClick={() => {
                           setResetWarningState({
                             message: 'Are you sure you want to delete this month? All events in this month will be deleted.',
@@ -162,6 +163,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                         >
                         <MdDeleteForever className='text-xl' />
                       </button>
+                      )}
                     </div>
                   ))
                 }
@@ -263,7 +265,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
 
                           { index !== 0 &&  (
                             <button
-                              className='p-2 text-red-800 hover:bg-red-800 hover:text-white rounded-l-none rounded-tr-none rounded-br'
+                              className='p-2 text-red-400 hover:bg-red-400 hover:text-white rounded-l-none rounded-tr-none rounded-br'
                               onClick={() => {
                                 setResetWarningState({
                                   message: 'Are you sure you want to delete this category? All events with this category will be set to previous category.',
