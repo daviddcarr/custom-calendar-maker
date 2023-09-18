@@ -15,16 +15,32 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
     }
 
     const eventIndex = calendar.events.indexOf(event)
+
+    const downloadJson = (event) => {
+        if (event !== null) {  
+          const filename = `calendarling_event_${event.date}-${calendar.months[event.month].name}-${calendar.startYear+event.year}.json`
+
+          const storedData = JSON.stringify([event])
+  
+          let element = document.createElement('a')
+          element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(storedData))
+          element.setAttribute('download', filename)
+  
+          document.body.appendChild(element)
+          element.click()
+          document.body.removeChild(element)
+        }
+      }
   
     return (
         <>
             <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center p-4">
-                <div className="bg-white p-8 rounded-lg max-h-[80vh] overflow-scroll space-y-4">
+                <div className="bg-gray-800 backdrop-blur-sm bg-opacity-80 p-8 rounded-lg max-h-[80vh] overflow-scroll space-y-4">
         
                 <div className='flex'>
-                    <h2 className="text-2xl font-bold text-gray-900 grow">Edit Event</h2>
+                    <h2 className="text-2xl font-bold text-white grow">Edit Event</h2>
                     <button
-                        className='text-3xl text-gray-500 hover:text-gray-700 rounded flex items-center space-x-4'
+                        className='text-3xl text-gray-500 hover:text-gray-300 rounded flex items-center space-x-4'
                         onClick={() => setShowEditEvent(false)}
                             >
                         <AiOutlineCloseCircle />
@@ -38,11 +54,11 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                     >
                         {/* Event Name Field */}
                         <div>
-                            <label className='text-gray-900'>Event name:</label>
+                            <label className='text-white'>Event name:</label>
                             <input
                             type="text"
                             value={event.name}
-                            className='w-full border-2 border-gray-300 rounded px-4 py-2 text-gray-900'
+                            className='w-full border-2 border-gray-500 bg-gray-700 rounded px-4 py-2 text-white'
                             onChange={(e) => {
                                 
                                 const events = calendar.events
@@ -54,14 +70,14 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
         
                         {/* Event Date FIeld */}
                         <div>
-                            <label className='text-gray-900'>Event Day / Month / Year:</label>
+                            <label className='text-white'>Event Day / Month / Year:</label>
                             <div className="flex">
             
                                 <input
                                     type="number"
                                     value={event.date}
                                     step={1}
-                                    className='w-full border-l-2 border-y-2 border-r-none border-gray-300 rounded-l rounded-r-none px-4 py-2 text-gray-900'
+                                    className='w-full border-l-2 border-y-2 border-r-none border-gray-500 bg-gray-700 rounded-l rounded-r-none px-4 py-2 text-white'
                                     onChange={(e) => {
                                         const events = calendar.events
                                         events[eventIndex].date = e.target.value ? parseInt(e.target.value) : 0
@@ -71,7 +87,7 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                 
                                 <select
                                     value={event.month}
-                                    className='w-full bg-transparent border-y-2 border-x-[1px] rounded-none border-gray-300 px-4 py-2 text-gray-900'
+                                    className='w-full bg-transparent border-y-2 border-x-[1px] rounded-none border-gray-500 bg-gray-700 px-4 py-2 text-white'
                                     onChange={(e) => {
                                         const events = calendar.events
                                         events[eventIndex].month = e.target.value ? parseInt(e.target.value) : 0
@@ -88,7 +104,7 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                                 <select
                 
                                     value={event.year}
-                                    className='w-full border-r-2 border-y-2 border-l-none border-gray-300 rounded-r rounded-l-none px-4 py-2 text-gray-900'
+                                    className='w-full border-r-2 border-y-2 border-l-none border-gray-500 bg-gray-700 rounded-r rounded-l-none px-4 py-2 text-white'
                                     onChange={(e) => {
                                         const events = calendar.events
                                         events[eventIndex].year = e.target.value ? parseInt(e.target.value) : 0
@@ -107,10 +123,10 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
 
                         {/* Event Category Field */}
                         <div className="grid grid-cols-[auto,1fr]">
-                            <label className='text-gray-900 p-2 border-y-2 border-l-2 border-r-[1px] rounded-l rounded-r-none border-gray-300'>Category:</label>
+                            <label className='text-white p-2 border-y-2 border-l-2 border-r-[1px] rounded-l rounded-r-none border-gray-500 bg-gray-700'>Category:</label>
                             <select
                                 value={event.category}
-                                className='border-y-2 border-r-2 border-l-none rounded-r rounded-l-none bg-transparent border-gray-300 px-4 py-2 text-gray-900'
+                                className='border-y-2 border-r-2 border-l-none rounded-r rounded-l-none bg-transparent border-gray-500 bg-gray-700 px-4 py-2 text-white'
                                 onChange={(e) => {
                                     const events = calendar.events
                                     events[eventIndex].category = e.target.value
@@ -131,11 +147,11 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                     <div>
                         
                         <div className="h-full grid grid-rows-[auto,1fr]">
-                            <label className='text-gray-900'>event description:</label>
+                            <label className='text-white'>Event description:</label>
                             <textarea
                                 value={event.description}
                                 rows={6}
-                                className='w-full border-2 border-gray-300 rounded px-4 py-2 text-gray-900'
+                                className='w-full border-2 border-gray-500 bg-gray-700 rounded px-4 py-2 text-white'
                                 onChange={(e) => {
                                     const events = calendar.events
                                     events[eventIndex].description = e.target.value
@@ -174,6 +190,15 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                     >
                         <MdDeleteForever className='text-white' />
                     </button>
+
+                    <button
+                        className='bg-gray-700 hover:bg-gray-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-2'
+                        onClick={() => {
+                            downloadJson(event)
+                        }}>
+                        <span>Download</span>
+                    </button>
+
                 </div>
         
                 </div>
