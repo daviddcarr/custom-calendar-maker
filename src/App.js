@@ -30,17 +30,24 @@ function App() {
 
   return (
     <main
+      id="main-container"
       className={`flex min-h-screen flex-col items-center justify-between p-6 md:p-12 xl:p-24 pt-[calc(1.5rem+50px)] md:pt-[calc(3rem+50px)] bg-black`}
     >
 
       <div className="w-full fixed z-50 top-0 left-0 right-0 px-6 md:px-12 xl:px-24 bg-gray-900 bg-opacity-70 backdrop-blur-sm">
         <div className="m-auto max-w-[1500px] py-2 flex justify-between">
-          <h2 className="font-logo text-2xl capitalize">Calendarling</h2>
+          <button className=""
+            onClick={() => {
+                document.getElementById(`main-container`).scrollIntoView({ behavior: 'smooth' })
+            }}
+            >
+            <h2 className="font-logo text-2xl capitalize">Calendarling</h2>
+          </button>
         </div>
       </div>
 
 
-       <div className='w-full'>
+       <div className='w-full' id="calendar-container">
 
           <div className="w-full max-w-[1500px] m-auto">
             {/* Calendar Title */}
