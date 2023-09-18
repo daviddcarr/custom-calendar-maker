@@ -45,10 +45,10 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
     return (
       <>
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-gray-800 backdrop-blur-sm bg-opacity-80 p-8 rounded-lg max-h-[80vh] overflow-scroll">
+          <div className="bg-gray-800 backdrop-blur-sm bg-opacity-80 py-8 rounded-lg grid grid-rows-[auto,70vh] ">
 
             {/* Title and Close Button */}
-            <div className="flex flex-wrap">
+            <div className="flex flex-wrap px-8">
                 <h2 className="text-2xl font-bold text-white grow">Edit Calendar</h2>
                 <button
                     className='text-3xl text-gray-500 hover:text-gray-300 rounded flex items-center space-x-4'
@@ -65,7 +65,8 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                 </div>
             </div>
     
-            <div className="mt-4 space-y-8">
+            {/* Calendar Data Form */}
+            <div className="mt-4 space-y-8 overflow-scroll px-8 gradient-mask-small py-6">
 
               {/* Calendar Name Field */}
               <div>
@@ -107,6 +108,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
               <div className="flex flex-col space-y-2">
                 <label className='text-white'>Months:</label>
     
+                {/* Month List */}
                 {
                   calendar.months.map((month, index) => (
                     <div key={index} className='border-[2px] border-gray-500 bg-gray-700 rounded grid grid-cols-[auto,1fr,auto]'>
@@ -126,15 +128,16 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                         type="number"
                         value={month.days}
                         step={1}
-                        className='w-full rounded px-4 py-2 text-white bg-transparent'
+                        className={`w-full rounded px-4 py-2 text-white bg-transparent ${ index === 0 ? 'col-span-2' : '' }`}
                         onChange={(e) => {
                           const months = calendar.months
                           months[index].days = e.target.value ? parseInt(e.target.value) : 0
                           setCalendar({...calendar, months: months})
                         }}
                       />
+                      { index !== 0 &&  (
                       <button
-                        className='p-2 text-red-500 hover:bg-red-600 hover:text-white rounded-l-none rounded-tr-none rounded-br'
+                        className='p-2 text-red-400 hover:bg-red-400 hover:text-white rounded-l-none rounded-tr-none rounded-br'
                         onClick={() => {
                           setResetWarningState({
                             message: 'Are you sure you want to delete this month? All events in this month will be deleted.',
@@ -162,10 +165,12 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                         >
                         <MdDeleteForever className='text-xl' />
                       </button>
+                      )}
                     </div>
                   ))
                 }
     
+                {/* Add Month Button */}
                 <button
                   className='bg-green-500 hover:bg-green-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
                   onClick={() => {
@@ -263,7 +268,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
 
                           { index !== 0 &&  (
                             <button
-                              className='p-2 text-red-800 hover:bg-red-800 hover:text-white rounded-l-none rounded-tr-none rounded-br'
+                              className='p-2 text-red-400 hover:bg-red-400 hover:text-white rounded-l-none rounded-tr-none rounded-br'
                               onClick={() => {
                                 setResetWarningState({
                                   message: 'Are you sure you want to delete this category? All events with this category will be set to previous category.',
@@ -312,9 +317,9 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
       
               </div>
 
-              <hr className='border-gray-200' />
+              <hr className='border-gray-600' />
 
-              {/* Text field to load calendar JSON to localStorage */}
+              {/* Export and Import Interfaces */}
               <div className="space-y-2">
 
                 <h3>Export / Import Data</h3>
@@ -368,10 +373,33 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                         ))
                       }
                     </div>
-                    <div className="">
-                      {/* Export eventsToExport data */}
+  
+                    {/* Buttons to Select None or All and Export eventsToExport data */}
+                    <div className="flex space-x-2">
+
+                      {/* Select None */}
                       <button
-                        className='bg-green-500 hover:bg-green-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                        className='bg-gray-800 hover:bg-gray-900 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                        onClick={() => {
+                          setEventsToExport([])
+                        }}
+                        >
+                        <span>Select None</span>
+                      </button>
+
+                      {/* Select All */}
+                      <button
+                        className='bg-gray-800 hover:bg-gray-900 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                        onClick={() => {
+                          setEventsToExport(calendar.events)
+                        }}
+                        >
+                        <span>Select All</span>
+                      </button>
+
+                      {/* Download */}
+                      <button
+                        className={`${ eventsToExport.length > 0 ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-gray-800 text-gray-600 pointer-events-none'} text-lg px-4 grow py-2 rounded flex items-center space-x-4`}
                         onClick={() => {
                           const filename = 'my_calendarling_events.json'
 
@@ -385,8 +413,9 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                           setShowEventsList(false)
                         }}
                         >
-                        <TbFileExport className='text-white' /> <span>Download</span>
+                        <TbFileExport /> <span>Download</span>
                       </button>
+
                     </div>
                   </div>
                 )}
@@ -428,6 +457,8 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                       />
                 )}
               </div>
+
+              <hr className='border-gray-600' />
 
               {/* Save  Button */}
               <div  className="flex gap-2">
