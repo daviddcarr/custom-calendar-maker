@@ -74,7 +74,7 @@ const JumpToButtons = ({calendar}) => {
                     >
                     <PiArrowsDownUpBold className={` transition-transform duration-500 ${showMobileButtons ? 'rotate-0' : 'rotate-[360deg]'}`} />
                 </button>
-                <div className={`w-[100vw] bg-gray-700 py-5 bg-opacity-70 backdrop-blur-sm transition-all duration-500 ${ showMobileButtons ? 'mb-0' : '-mb-[calc(1.5rem+32vh)]'} py-[1vh]`}>
+                <div className={`w-[100vw] bg-gray-700 py-5 bg-opacity-70 backdrop-blur-sm transition-all duration-500 ${ showMobileButtons ? 'mb-0' : '-mb-[32vh]'} py-[1vh]`}>
                     <div id="jumpto-scroll-container-mobile" className="gradient-mask gradient-scroll-detection overflow-scroll max-h-[30vh]">
                         {months.map((month, index) => (
                             <button
