@@ -10,10 +10,13 @@ import JsonUploader from './JsonUploader'
 const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarToLocalStorage, defaultCalendar}) => {
 
     const [calendarJSON, setCalendarJSON] = useState(JSON.stringify(calendar, null, 2))
+    const [dataUploaded, setDataUploaded] = useState(false)
 
     const [showFileUploader, setShowFileUploader] = useState(false)
     const [importEvents, setImportEvents] = useState(false)
-    const [dataUploaded, setDataUploaded] = useState(false)
+
+    const [showEventsList, setShowEventsList] = useState(false)
+    const [eventsToExport, setEventsToExport] = useState([])
 
     const [showResetWarning, setShowResetWarning] = useState(false)
     const [resetWarningState, setResetWarningState] = useState({
@@ -315,37 +318,105 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
               <div className="space-y-2">
 
                 <h3>Export / Import Data</h3>
+
+                {/* Export Buttons */}
                 <div className="flex gap-2 w-full">
 
                   <button
                     className='grow bg-green-500 hover:bg-green-600  text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
                     onClick={downloadJson}
                     >
-                      <TbFileExport className='text-white' /> Export
+                      <TbFileExport className='text-white' /> <span>Export</span>
                   </button>
 
                   <button
-                    className='bg-green-500 hover:bg-green-600 grow text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                  className={`${showEventsList ? 'bg-red-800 hover:bg-red-900' : 'bg-green-500 hover:bg-green-600'} text-white text-lg px-4 py-2 rounded flex items-center space-x-4`}
+                    onClick={() => {
+                      setShowEventsList(!showEventsList)
+                    }}
+                    >
+                      { showEventsList ? <AiOutlineCloseCircle className='text-white' /> : <TbFileExport className='text-white' />} <span>Export Events</span>
+                  </button>
+
+                </div>
+
+                {/* Export Events List */}
+                {showEventsList && (
+                  <div className="flex flex-col space-y-2 p-2 border-2 border-gray-700 rounded">
+                    <label className='text-white'>Select events to export:</label>
+                    <div className="flex flex-col space-y-2 max-h-64 overflow-scroll">
+                      {
+                        calendar.events.map((event, index) => (
+                          <div key={index} className={`border-[2px] ${eventsToExport.includes(event) ? 'border-green-400' : 'border-gray-500'}  bg-gray-700 rounded`}>
+                            {/* A checkbox that adds/removes event data to eventsToExport when checked  */}
+                            <input
+                              type="checkbox"
+                              name={`event-${index}`}
+                              id={`event-${index}`}
+                              checked={eventsToExport.includes(event)}
+                              className='p-2 text-red-500 hover:bg-red-600 hover:text-white rounded-l-none rounded-tr-none rounded-br hidden'
+                              onChange={() => {
+                                if (eventsToExport.includes(event)) {
+                                  setEventsToExport(eventsToExport.filter(e => e !== event))
+                                } else {
+                                  setEventsToExport([...eventsToExport, event])
+                                }
+                              }}
+                            />
+                            <label for={`event-${index}`} className={`${eventsToExport.includes(event) ? 'text-green-400' : 'text-white'} grow block w-full p-2 cursor-pointer  border-r-[1px] border-b-[1px] border-gray-500 bg-gray-700`}>{ event.name } - {calendar.months[event.month].name} {event.date}, {calendar.startYear+event.year}</label>
+                          </div>
+                        ))
+                      }
+                    </div>
+                    <div className="">
+                      {/* Export eventsToExport data */}
+                      <button
+                        className='bg-green-500 hover:bg-green-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                        onClick={() => {
+                          const filename = 'my_calendarling_events.json'
+
+                          let element = document.createElement('a')
+                          element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(eventsToExport, null, 2)))
+                          element.setAttribute('download', filename)
+
+                          document.body.appendChild(element)
+                          element.click()
+                          document.body.removeChild(element)
+                          setShowEventsList(false)
+                        }}
+                        >
+                        <TbFileExport className='text-white' /> <span>Download</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+
+                {/* Import Buttons */}
+                <div className="flex gap-2 w-full">
+
+                  <button
+                    className={`${showFileUploader && ! importEvents  ? 'bg-red-800 hover:bg-red-900' : 'bg-green-500 hover:bg-green-600'} grow text-white text-lg px-4 py-2 rounded flex items-center space-x-4`}
                     onClick={() => {
                       setImportEvents(false)
                       setShowFileUploader(!showFileUploader)
                     }}
                     >
-                     <TbFileImport className='text-white' /> Import
+                    { showFileUploader && ! importEvents  ? <AiOutlineCloseCircle className='text-white' /> : <TbFileImport className='text-white' /> } <span>Import</span>
                   </button>
                   <button
-                    className='bg-green-500 hover:bg-green-600 shrink text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                    className={`${showFileUploader && importEvents  ? 'bg-red-800 hover:bg-red-900' : 'bg-green-500 hover:bg-green-600'} text-white text-lg px-4 py-2 rounded flex items-center space-x-4`}
                     onClick={() => {
                       setImportEvents(true)
                       setShowFileUploader(!showFileUploader)
                     }}
                     >
-                      <TbFileImport className='text-white' /> Import Events
+                      { showFileUploader && importEvents  ? <AiOutlineCloseCircle className='text-white' /> : <TbFileImport className='text-white' /> } <span>Import Events</span>
                   </button>
 
                 </div>
 
-
+                {/* Import Files UI */}
                 {showFileUploader && (
                     <JsonUploader
                       visibilityFunction={setShowFileUploader}
