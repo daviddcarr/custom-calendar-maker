@@ -181,6 +181,14 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                     >
                         <MdSave className='text-white' /> <span>Save</span>
                     </button>
+
+                    <button
+                        className='bg-gray-700 hover:bg-gray-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-2'
+                        onClick={() => {
+                            downloadJson(event)
+                        }}>
+                        <span>Download</span>
+                    </button>
         
                     <button
                     className='bg-red-800 hover:bg-red-900 text-white text-lg px-4 py-2 rounded flex items-center space-x-2'
@@ -189,14 +197,6 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                     }}
                     >
                         <MdDeleteForever className='text-white' />
-                    </button>
-
-                    <button
-                        className='bg-gray-700 hover:bg-gray-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-2'
-                        onClick={() => {
-                            downloadJson(event)
-                        }}>
-                        <span>Download</span>
                     </button>
 
                 </div>
