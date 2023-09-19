@@ -162,13 +162,13 @@ const RenderDaysOfMonth = ({calendar, setCalendar, setCurrentEvent, setShowEditE
   return days.map((day, index) => (
       <div
         key={index}
-      className={`weekday ${ day.isDate ? 'is-date' : 'not-date'} ${checkIfDayIsChecked(day) !== -1 ? 'bg-gray-950' : ''} flex flex-col min-h-[150px] border-[1px] border-gray-900`}
+      className={`weekday ${ day.isDate ? 'is-date' : 'not-date'} ${checkIfDayIsChecked(day) !== -1 ? 'bg-gray-900' : ''} flex flex-col min-h-[150px] border-[1px] border-gray-800`}
       >
         {day.isDate && (
           <>
             {/* Day Title & Check Button */}
             <button
-              className={`group hover:bg-gray-950 flex justify-between items-center bg-transparent w-full px-4 py-2  text-left ${day.isDate ? 'text-gray-900' : 'text-gray-500'}`}
+              className={`group ${checkIfDayIsChecked(day) !== -1 ? 'hover:bg-black ' : 'hover:bg-gray-900'} flex justify-between items-center bg-transparent w-full px-4 py-2  text-left ${day.isDate ? 'text-gray-900' : 'text-gray-500'}`}
               onClick={() => {
                 let checkedDays = [...calendar.checkedDays]
                 const dayIndex = checkIfDayIsChecked(day)

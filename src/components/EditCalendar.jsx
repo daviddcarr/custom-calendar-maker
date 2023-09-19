@@ -67,7 +67,7 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
     return (
       <>
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-gray-800 backdrop-blur-sm bg-opacity-80 py-8 rounded-lg grid grid-rows-[auto,70vh] ">
+          <div className="bg-gray-800 backdrop-blur-sm bg-opacity-80 py-8 rounded-lg grid grid-rows-[auto,55vh] ">
 
             {/* Title and Close Button */}
             <div className="flex flex-wrap px-8">
