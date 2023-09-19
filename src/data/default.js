@@ -38,8 +38,18 @@ const defaultCalendar = {
             "month":0,
             "year":0,
             "category":0,
-            "description":"New Year's Day is the first day of the Gregorian calendar, which is widely used in many countries such as the USA."
+            "description":"New Year's Day is the first day of the Gregorian calendar, which is widely used in many countries such as the USA.",
+            "trackableItems":[
+                {
+                    "name":"Workouts",
+                    "value":1
+                },
+            ]
         }
+    ],
+    "trackableItems":[
+        "Workouts",
+        "Meditation",
     ],
     "checkedDays": [
         {"day":8,"month":8,"year":0}

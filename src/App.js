@@ -1,11 +1,12 @@
 import { useState, useEffect, useMemo } from 'react'
 
-import { MdEditCalendar } from 'react-icons/md'
+import { MdEditCalendar, MdOutlineTableChart } from 'react-icons/md'
 
 import Calendar from './components/Calendar'
 import EditEvent from './components/EditEvent'
 import EditCalendar from './components/EditCalendar'
 import JumpToButtons from './components/JumpToButtons'
+import TrackableItems from './components/TrackableItems'
 
 import defaultCalendar from './data/default'
 
@@ -14,6 +15,7 @@ function App() {
   const [showEditCalendar, setShowEditCalendar] = useState(false)
   const [showEditEvent, setShowEditEvent] = useState(false)
   const [currentEvent, setCurrentEvent] = useState(0)
+  const [showTrackableItems, setShowTrackableItems] = useState(false)
 
   const [calendar, setCalendar] = useState(defaultCalendar)
 
@@ -60,6 +62,16 @@ function App() {
                 >
                 <MdEditCalendar />
               </button>
+
+              { calendar.trackableItems !== undefined && (
+                <button
+                  className='ml-4 bg-gray-500 hover:bg-gray-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                  onClick={() => setShowTrackableItems(!showTrackableItems)} 
+                  >
+                  <MdOutlineTableChart />
+                </button>
+              )}
+
             </div>
 
             {/* Render Calendar */}
@@ -97,6 +109,14 @@ function App() {
                 />
             )
           }
+
+          {/* Trackable Items */}
+          { showTrackableItems && (
+            <TrackableItems
+              calendar={calendar}
+              setShowTrackableItems={setShowTrackableItems}
+              />
+          )}
 
           {/* Jump To Buttons */}
           <JumpToButtons

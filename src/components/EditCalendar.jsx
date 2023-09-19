@@ -58,11 +58,13 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
       }
 
       calendarForm.addEventListener('scroll', handleScroll)
+      console.log('added event listener')
 
       return () => {
         calendarForm.removeEventListener('scroll', handleScroll)
+        console.log('removed event listener')
       }
-    })
+    }, [])
 
     return (
       <>
@@ -335,6 +337,81 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                     }}
                     >
                     <MdFormatListBulletedAdd className='text-white' /> <span>Add Category</span>
+                  </button>
+      
+              </div>
+
+              {/* Trackable Items Field */}
+              <div className="flex flex-col space-y-2">
+                  <label className='text-white'>Trackable Items:</label>
+                  <p className="text-gray-400">Add items you'd like to track in your calendar. Items here will be added together and displayed in the Trackable Items table.</p>
+                  { calendar.trackableItems &&
+                    calendar.trackableItems.map((trackableItem, index) => (
+                      <div key={index} className='border-[2px] border-gray-500 bg-gray-700 rounded grid grid-cols-[auto,1fr,auto]'>
+
+                        <label className='text-white p-2 border-r-[1px] border-gray-500 bg-gray-700'>Name:</label>
+                        <input
+                          type="text"
+                          value={trackableItem}
+                          className={`w-full border-gray-500 bg-gray-700 px-4 py-2 text-white ${ index === 0 ? 'col-span-2' : '' }`}
+                          onChange={(e) => {
+                            console.log(e.target.value)
+                            const trackableItems = calendar.trackableItems
+                            trackableItems[index] = e.target.value
+                            setCalendar({...calendar, trackableItems: trackableItems})
+                          }}
+                        />
+    
+                        { index !== 0 &&  (
+                          <button
+                            className='p-2 text-red-400 hover:bg-red-400 hover:text-white rounded-l-none rounded-tr-none rounded-br'
+                            onClick={() => {
+                              setResetWarningState({
+                                message: 'Are you sure you want to delete this Trackable Item? All events with this Trackable Item will be set to previous Trackable Item.',
+                                actionText: 'Delete',
+                                deleteFunction: () => {
+                                  const trackableItems = calendar.trackableItems
+                                  trackableItems.splice(index, 1)
+
+                                  // find all events with this trackableItem and remove it
+                                  const events = calendar.events
+                                  events.forEach(event => {
+                                    event.trackableItems.forEach((trackableItem, index) => {
+                                      if (trackableItem.name === trackableItems[index]) {
+                                        event.trackableItems.splice(index, 1)
+                                      }
+                                    })
+                                  })
+                                  setCalendar({...calendar, events: events, trackableItems: trackableItems})
+                                  setShowResetWarning(false)
+                                },
+                                cancelFunction: () => {
+                                  setShowResetWarning(false)
+                                }
+                              })
+                              setShowResetWarning(true)
+                            }}
+                            >
+                            <MdDeleteForever className='text-xl' />
+                          </button>
+                          )}
+                      </div>
+                    ))
+                  }
+      
+                  <button
+                    className='bg-green-500 hover:bg-green-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
+                    onClick={() => {
+                      if (calendar.trackableItems.length === 0) {
+                        setCalendar({...calendar, trackableItems: ['New Item']})
+                      } else {
+                        const trackableItems = calendar.trackableItems
+                        trackableItems.push('New Item')
+                        setCalendar({...calendar, trackableItems: trackableItems})
+                      }
+                    }}
+                    >
+                    <MdFormatListBulletedAdd className='text-white' /> <span>Add Item</span>
                   </button>
       
               </div>
