@@ -3,11 +3,12 @@ import { useState, useEffect } from 'react'
 import DeleteWarning from './DeleteWarning'
 
 import { MdDeleteForever, MdSave } from 'react-icons/md'
-import { AiOutlineCloseCircle } from 'react-icons/ai'
+import { AiOutlineCloseCircle, AiOutlinePlusCircle } from 'react-icons/ai'
 
 const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendarToLocalStorage}) => {
 
     const [showDeleteWarning, setShowDeleteWarning] = useState(false)
+    const [trackableItemToAdd, setTrackableItemToAdd] = useState({name: '', value: 0})
 
     const yearStrings = []
     for (let i = 0; i < calendar.years; i++) {
@@ -143,14 +144,15 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
 
                     </div>
         
-                    {/* Event Description Field */}
-                    <div>
+                    {/* Event Description & Trackable Items Fields */}
+                    <div className="space-y-2">
                         
-                        <div className="h-full grid grid-rows-[auto,1fr]">
+                        {/* Event Description Field */}
+                        <div className="grid grid-rows-[auto,1fr]">
                             <label className='text-white'>Event description:</label>
                             <textarea
                                 value={event.description}
-                                rows={6}
+                                rows={4}
                                 className='w-full border-2 border-gray-500 bg-gray-700 rounded px-4 py-2 text-white'
                                 onChange={(e) => {
                                     const events = calendar.events
@@ -159,6 +161,79 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                                 }}
                             />
                         </div>
+
+                        {/* Trackable Items Field */}
+                        { calendar.trackableItems !== undefined && (
+                            <div className="space-y-2">
+                                <label className='text-white'>Trackable Items:</label>
+
+                                {/* Trackable Item Add UI */}
+                                <div className="flex">
+                                    {/* Add select field to choose trackable item from calendar.trackableItems, add number field for quantity, add button to insert values to event.trackableItems array */}
+                                    <select
+                                        value={trackableItemToAdd.name}
+                                        className='grow border-l-2 border-y-2 border-r-none border-gray-500 bg-gray-700 rounded-l rounded-r-none px-4 py-2 text-white'
+                                        onChange={(e) => {
+                                            setTrackableItemToAdd({...trackableItemToAdd, name: e.target.value})
+                                        }}
+                                    >
+                                        <option value={''}>Select Item</option>
+                                        {
+                                            calendar.trackableItems.map((item, index) => (
+                                                <option key={index} value={item}>{item}</option>
+                                            ))
+                                        }
+                                    </select>
+
+                                    <input
+                                        type="number"
+                                        value={trackableItemToAdd.value}
+                                        step={1}
+                                        className='shrink border-l-[1px] border-y-2 border-r-none border-gray-500 bg-gray-700 rounded-none px-4 py-2 text-white'
+                                        onChange={(e) => {
+                                            setTrackableItemToAdd({...trackableItemToAdd, value: e.target.value ? parseInt(e.target.value) : 0})
+                                        }}
+                                    />
+
+                                    <button
+                                        className='bg-gray-700 hover:bg-green-600 border-l-[1px] border-y-2 border-r-2 border-gray-500 text-white text-lg px-4 py-2 rounded-r rounded-l-none flex items-center space-x-2 grow md:grow-0'
+                                        onClick={() => {
+                                            const events = calendar.events
+                                            if ( events[eventIndex].trackableItems === undefined ) {
+                                                events[eventIndex].trackableItems = [trackableItemToAdd]
+                                            } else {
+                                                events[eventIndex].trackableItems.push(trackableItemToAdd)
+                                            }
+                                            setCalendar({...calendar, events: events})
+                                            setTrackableItemToAdd({name: '', value: 0})
+                                        }}
+                                    > <AiOutlinePlusCircle /> </button>
+
+                                </div>
+
+                                {/* Trackable Item List */}
+                                <div className="flex flex-wrap gap-2">
+                                    {
+                                        event.trackableItems !== undefined && event.trackableItems.map((item, index) => (
+                                            <div
+                                                key={index}
+                                                className='bg-gray-700 p-0 rounded flex items-center space-x-2'
+                                            >
+                                                <span className="p-2">{item.name}: {item.value}</span>
+                                                <button
+                                                    className='bg-gray-700 hover:text-red-400 text-white text-lg p-2 rounded flex items-center space-x-2'
+                                                    onClick={() => {
+                                                        const events = calendar.events
+                                                        events[eventIndex].trackableItems.splice(index, 1)
+                                                        setCalendar({...calendar, events: events})
+                                                    }}
+                                                > <AiOutlineCloseCircle /> </button>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </div>
+                        )}
 
                     </div>
 
@@ -169,15 +244,15 @@ const EditEvent = ({calendar, setCalendar, setShowEditEvent, event, saveCalendar
                 <div className="flex gap-4">
         
                     <button
-                    className='bg-green-500 hover:bg-green-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-2 grow md:grow-0'
-                    onClick={() => {
-                        const events = calendar.events
-                        events[eventIndex] = event
-                        const updatedCalendar = {...calendar, events: events}
-                        setCalendar(updatedCalendar)
-                        saveCalendarToLocalStorage(updatedCalendar)
-                        setShowEditEvent(false)
-                    }}
+                        className='bg-green-500 hover:bg-green-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-2 grow md:grow-0'
+                        onClick={() => {
+                            const events = calendar.events
+                            events[eventIndex] = event
+                            const updatedCalendar = {...calendar, events: events}
+                            setCalendar(updatedCalendar)
+                            saveCalendarToLocalStorage(updatedCalendar)
+                            setShowEditEvent(false)
+                        }}
                     >
                         <MdSave className='text-white' /> <span>Save</span>
                     </button>
