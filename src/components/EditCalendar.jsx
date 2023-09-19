@@ -402,7 +402,10 @@ const EditCalendar = ({calendar, setCalendar, setShowEditCalendar, saveCalendarT
                   <button
                     className='bg-green-500 hover:bg-green-600 text-white text-lg px-4 py-2 rounded flex items-center space-x-4'
                     onClick={() => {
-                      if (calendar.trackableItems.length === 0) {
+                      // check if calendar has property trackableItems
+
+
+                      if (!calendar.trackableItems || calendar.trackableItems.length === 0) {
                         setCalendar({...calendar, trackableItems: ['New Item']})
                       } else {
                         const trackableItems = calendar.trackableItems
